@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="images">
+    <file alias="main_64.ico">img/ico/main_64.ico</file>
+    <file alias="pass_64.ico">img/ico/pass_64.ico</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-5.1.dtd">
+<!-- eric5 project file for project novelty_assistant -->
+<!-- Saved: 2012-07-17, 23:20:27 -->
+<!-- Copyright (C) 2012 Twister, twister.kz@gmail.com -->
+<Project version="5.1">
+  <Language>en_US</Language>
+  <Hash>969271bcb4e7cf09b7f541cfd5e78ebf58309475</Hash>
+  <ProgLanguage mixed="0">Python2</ProgLanguage>
+  <ProjectType>Qt4</ProjectType>
+  <Description></Description>
+  <Version>0.1</Version>
+  <Author>Twister</Author>
+  <Email>twister.kz@gmail.com</Email>
+  <Sources>
+    <Source>novelty_assistant.py</Source>
+    <Source>gui/Ui_main_form.py</Source>
+    <Source>task_list.py</Source>
+    <Source>novelty.py</Source>
+    <Source>errors.py</Source>
+    <Source>xml_utils.py</Source>
+    <Source>remote_functions.py</Source>
+    <Source>cache.py</Source>
+    <Source>gui/Ui_login_form.py</Source>
+  </Sources>
+  <Forms>
+    <Form>gui/main_form.ui</Form>
+    <Form>gui/login_form.ui</Form>
+  </Forms>
+  <Translations/>
+  <Resources>
+    <Resource>novelty_assistant.qrc</Resource>
+  </Resources>
+  <Interfaces/>
+  <Others>
+    <Other>gui/Ui_main_form.py</Other>
+    <Other>novelty_assistant.py</Other>
+    <Other>gui/Ui_login_form.py</Other>
+    <Other>novelty_assistant_rc.py</Other>
+  </Others>
+  <MainScript>novelty_assistant.py</MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES"/>
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.py2" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw2" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.qm" type="TRANSLATIONS"/>
+    <FiletypeAssociation pattern="*.qrc" type="RESOURCES"/>
+    <FiletypeAssociation pattern="*.ts" type="TRANSLATIONS"/>
+    <FiletypeAssociation pattern="*.ui" type="FORMS"/>
+    <FiletypeAssociation pattern="*.ui.h" type="FORMS"/>
+  </FiletypeAssociations>
+</Project>
