@@ -58,7 +58,11 @@ class tray_application(QtGui.QApplication):
     
     @QtCore.pyqtSlot()
     def doShowMainForm(self):
-        self.main_form.show()
+        if self.main_form.windowState() != Qt.WindowMaximized:
+            self.main_form.showNormal()
+        else:
+            self.main_form.show()
+        self.main_form.activateWindow()
     
     @QtCore.pyqtSlot()
     def iconActivated(self, reason):
