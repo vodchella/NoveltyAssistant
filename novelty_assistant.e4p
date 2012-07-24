@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric5 project file for project novelty_assistant -->
-<!-- Saved: 2012-07-17, 23:20:27 -->
+<!-- Saved: 2012-07-24, 20:39:26 -->
 <!-- Copyright (C) 2012 Twister, twister.kz@gmail.com -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -22,6 +22,7 @@
     <Source>remote_functions.py</Source>
     <Source>cache.py</Source>
     <Source>gui/Ui_login_form.py</Source>
+    <Source>login.py</Source>
   </Sources>
   <Forms>
     <Form>gui/main_form.ui</Form>
