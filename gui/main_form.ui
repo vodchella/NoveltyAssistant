@@ -179,7 +179,11 @@
         <widget class="QWidget" name="widget_3" native="true">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="timesheet_grid" name="tblWeek"/>
+           <widget class="timesheet_grid" name="tblWeek">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

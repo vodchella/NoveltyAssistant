@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
 #
-# Created: Sun Jul 29 21:52:29 2012
+# Created: Mon Jul 30 00:20:19 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -93,6 +93,7 @@ class Ui_frmMain(object):
         self.verticalLayout.setMargin(0)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tblWeek = timesheet_grid(self.widget_3)
+        self.tblWeek.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.tblWeek.setObjectName(_fromUtf8("tblWeek"))
         self.tblWeek.setColumnCount(0)
         self.tblWeek.setRowCount(0)
