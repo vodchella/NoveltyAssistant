@@ -428,6 +428,8 @@ class task_item(QtGui.QFrame):
         
         if self.group_id == -1:
             self.cboCustomer.setFocus()
+        
+        self.parent_task_list.ensureWidgetVisible(self)
     
     def setTime(self, minutes):
         new_time = int(minutes)

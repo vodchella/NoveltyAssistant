@@ -25,3 +25,6 @@ def getCustomersXML():
 
 def getTaskTypesXML():
     return get_data_xml("GetTaskTypes", "")
+
+def GetTimesheetXML(staff_id, date_beg, date_end):
+    return get_data_xml("GetTimesheet", "<PARAMS><STAFF_ID>%s</STAFF_ID><BEG_DATE>%s</BEG_DATE><END_DATE>%s</END_DATE></PARAMS>" % (staff_id, date_beg, date_end))

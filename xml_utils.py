@@ -19,7 +19,10 @@ def replace_field_in_xml(xml, field, value):
 
 def get_node_element_value(node, elem_name):
     elem = node.getElementsByTagName(elem_name)
-    return elem[0].childNodes[0].nodeValue
+    try:
+        return elem[0].childNodes[0].nodeValue
+    except:
+        pass
 
 def prepareString(str):
     return str.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')

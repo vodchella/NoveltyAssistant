@@ -87,22 +87,25 @@ def main():
         app.main_form.ui.setupUi(app.main_form)
         app.main_form.show()
         
-        app.main_form.tl = task_list(app.main_form.ui.tabTasks)
+        #
+        # Tasks
+        #
+        app.main_form.tl = app.main_form.ui.tl
         app.main_form.tl.staff_id = staff_id
-        app.main_form.ui.gridLayout_2.addWidget(app.main_form.tl, 1, 0, 1, 1)
         
-        app.main_form.statusLabel = tasks_status_label(app.main_form.ui.tabTasks)
-        app.main_form.statusLabel.task_list = app.main_form.tl
-        app.main_form.statusLabel.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
-        app.main_form.ui.gridLayout_2.addWidget(app.main_form.statusLabel, 2, 0, 1, 1)
-#        app.main_form.statusLabel.show()
+        app.main_form.ui.statusLabel.task_list = app.main_form.tl
 
-        QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.statusLabel.updateStatus )
+        QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.ui.statusLabel.updateStatus )
         QtCore.QObject.connect( app.main_form.ui.cmdNew, QtCore.SIGNAL('clicked()'), app.main_form.addTask )
         QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.refreshTaskList )
         QtCore.QObject.connect( app.main_form.ui.dt, QtCore.SIGNAL('dateChanged(QDate)'), app.main_form.tl.updateOnDate )
         app.main_form.ui.dt.setDate(QtCore.QDate.currentDate())
-#        app.main_form.ui.dt.setDate(QtCore.QDate(2012, 07, 20))
+        
+        #
+        # Time
+        #
+        app.main_form.ui.tblWeek.staff_id = staff_id
+        app.main_form.ui.tblWeek.updateForCurrentWeek()
         
         sys.exit( app.exec_() )
 
