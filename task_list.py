@@ -10,14 +10,28 @@ from remote_functions import *
 from errors import GuiException
 from cache import *
 
+def getTimeText(minutes):
+    m = int(minutes)
+    if m < 60:
+        return u'%s мин.' % m
+    else:
+        hours = m // 60
+        minutes_remainder = m % 60
+        if minutes_remainder == 0:
+            return u'%s ч.' % hours
+        else:
+            return u'%s ч. %s мин.' % (hours, minutes_remainder)
+
 class task_list(QtGui.QScrollArea):
     groups  = []
     items   = []
     staff_id = 0
+    total_time = 0
     
     def __init__(self,  parent):
         super(task_list, self).__init__(parent)
         self.startEditNewItem = QtCore.pyqtSignal()
+        self.totalTimeChanged = QtCore.pyqtSignal()
 
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setWidgetResizable(True)
@@ -75,6 +89,8 @@ class task_list(QtGui.QScrollArea):
             item.parent_task_list = self
             item.item_index = len(self.items) - 1
             item.group_id = i_group_id
+            self.total_time += item.time_value
+            QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
             QtCore.QObject.connect( self, QtCore.SIGNAL('startEditNewItem()'), item.stopEdit )
             QtCore.QObject.connect( item, QtCore.SIGNAL('beforeEditItem()'), self.beforeEditNewItem )
         else:
@@ -94,6 +110,9 @@ class task_list(QtGui.QScrollArea):
         
         if group_id != -1:
             items_count_in_group = self.getItemsCountInGroup(group_id)
+        
+        self.total_time -= item.time_value
+        QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
         
         item.setParent(None)
         del self.items[index], item
@@ -125,6 +144,8 @@ class task_list(QtGui.QScrollArea):
             group = self.groups[i]
             group.setParent(None)
             del self.groups[i]
+        self.total_time = 0
+        QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
     
     @QtCore.pyqtSlot()
     def newItem(self):
@@ -212,7 +233,7 @@ class task_item(QtGui.QFrame):
     item_index = -1
     group_id = -1
     task_type_id = -1
-    time_value = -1
+    time_value = 0
     worksheet_id = 0
     
     def __init__(self,  parent):
@@ -284,7 +305,9 @@ class task_item(QtGui.QFrame):
                                 self.parent_task_list.staff_id)
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
-            setWorksheetXML(xml_str)
+            result_xml = setWorksheetXML(xml_str)
+            if result_xml.find('<ACTION>INSERTED</ACTION>') != -1:
+                self.worksheet_id = int(get_xml_field_value(result_xml, 'WORKSHEET_ID'))
         finally:
             QApplication.restoreOverrideCursor()
         
@@ -407,17 +430,14 @@ class task_item(QtGui.QFrame):
             self.cboCustomer.setFocus()
     
     def setTime(self, minutes):
-        m = int(minutes)
-        self.time_value = m
-        if m < 60:
-            self.lblTime.setText(u'%s мин.' % m)
-        else:
-            hours = m // 60
-            minutes_remainder = m % 60
-            if minutes_remainder == 0:
-                self.lblTime.setText(u'%s ч.' % hours)
-            else:
-                self.lblTime.setText(u'%s ч. %s мин.' % (hours, minutes_remainder))
+        new_time = int(minutes)
+        old_time = self.time_value
+        self.time_value = new_time
+        self.lblTime.setText(getTimeText(new_time))
+        if self.parent_task_list is not None:
+            self.parent_task_list.total_time -= old_time
+            self.parent_task_list.total_time += new_time
+            QtCore.QObject.emit( self.parent_task_list, QtCore.SIGNAL('totalTimeChanged()') )
     
     def setDesc(self, desc):
         self.lblDesc.setText(desc)
@@ -443,6 +463,22 @@ class task_label(QtGui.QLabel):
     
     def mouseReleaseEvent(self, event):
         QtCore.QObject.emit( self, QtCore.SIGNAL('clicked()') )
+
+class tasks_status_label(QtGui.QLabel):
+    task_list = None
+    
+    def __init__(self,  parent):
+        super(tasks_status_label,  self).__init__(parent)
+    
+    @QtCore.pyqtSlot()
+    def updateStatus(self):
+        if self.task_list is not None:
+            if self.task_list.total_time != 0:
+                self.setText(u'Общее время %s' % getTimeText(self.task_list.total_time))
+                self.show()
+            else:
+                self.setText('')
+                self.hide()
 
 class task_combo_box(QtGui.QComboBox):
     def __init__(self,  parent):

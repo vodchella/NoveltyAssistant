@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
 #
-# Created: Tue Jul 17 23:27:45 2012
+# Created: Sun Jul 29 19:35:58 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -65,11 +65,11 @@ class Ui_frmMain(object):
         self.horizontalLayout.addWidget(self.cmdRefresh)
         self.gridLayout_2.addWidget(self.frame, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tabTasks, _fromUtf8("Задачи"))
-        self.tabNotes = QtGui.QWidget()
-        self.tabNotes.setObjectName(_fromUtf8("tabNotes"))
-        self.gridLayout = QtGui.QGridLayout(self.tabNotes)
+        self.tabTime = QtGui.QWidget()
+        self.tabTime.setObjectName(_fromUtf8("tabTime"))
+        self.gridLayout = QtGui.QGridLayout(self.tabTime)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.tabWidget.addTab(self.tabNotes, _fromUtf8("Заметки"))
+        self.tabWidget.addTab(self.tabTime, _fromUtf8("Приход / уход"))
         self.gridLayout_3.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(frmMain)

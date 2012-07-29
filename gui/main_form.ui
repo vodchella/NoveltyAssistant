@@ -135,9 +135,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabNotes">
+     <widget class="QWidget" name="tabTime">
       <attribute name="title">
-       <string notr="true">Заметки</string>
+       <string notr="true">Приход / уход</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout"/>
      </widget>

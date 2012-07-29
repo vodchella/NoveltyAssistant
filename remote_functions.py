@@ -18,7 +18,7 @@ def getWorksheetsXML(staff_id, date):
     return get_data_xml("GetWorksheets", "<PARAMS><STAFF_ID>%s</STAFF_ID><INPUT_DATE>%s</INPUT_DATE></PARAMS>" % (staff_id, date.toString('dd.MM.yyyy')))
 
 def setWorksheetXML(xml):
-    get_data_xml('SetWorksheets', xml)
+    return get_data_xml('SetWorksheets', xml)
 
 def getCustomersXML():
     return get_data_xml("GetCustomers", "")
