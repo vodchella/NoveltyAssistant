@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric5 project file for project novelty_assistant -->
-<!-- Saved: 2012-07-29, 22:52:42 -->
+<!-- Saved: 2012-09-04, 20:13:00 -->
 <!-- Copyright (C) 2012 Twister, twister.kz@gmail.com -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -24,10 +24,12 @@
     <Source>gui/Ui_login_form.py</Source>
     <Source>login.py</Source>
     <Source>timesheet_grid.py</Source>
+    <Source>gui/Ui_input_date_time.py</Source>
   </Sources>
   <Forms>
     <Form>gui/main_form.ui</Form>
     <Form>gui/login_form.ui</Form>
+    <Form>gui/input_date_time.ui</Form>
   </Forms>
   <Translations/>
   <Resources>
@@ -39,6 +41,7 @@
     <Other>novelty_assistant.py</Other>
     <Other>gui/Ui_login_form.py</Other>
     <Other>novelty_assistant_rc.py</Other>
+    <Other>gui/Ui_input_date_time.py</Other>
   </Others>
   <MainScript>novelty_assistant.py</MainScript>
   <Vcs>

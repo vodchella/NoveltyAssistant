@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
 #
-# Created: Mon Jul 30 00:20:19 2012
+# Created: Tue Sep  4 22:13:18 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -81,12 +81,6 @@ class Ui_frmMain(object):
         self.tabTime.setObjectName(_fromUtf8("tabTime"))
         self.gridLayout = QtGui.QGridLayout(self.tabTime)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.frame_2 = QtGui.QFrame(self.tabTime)
-        self.frame_2.setMinimumSize(QtCore.QSize(0, 50))
-        self.frame_2.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame_2.setObjectName(_fromUtf8("frame_2"))
-        self.gridLayout.addWidget(self.frame_2, 0, 0, 1, 1)
         self.widget_3 = QtGui.QWidget(self.tabTime)
         self.widget_3.setObjectName(_fromUtf8("widget_3"))
         self.verticalLayout = QtGui.QVBoxLayout(self.widget_3)
@@ -99,6 +93,17 @@ class Ui_frmMain(object):
         self.tblWeek.setRowCount(0)
         self.verticalLayout.addWidget(self.tblWeek)
         self.gridLayout.addWidget(self.widget_3, 1, 0, 1, 1)
+        self.widget_2 = QtGui.QWidget(self.tabTime)
+        self.widget_2.setMinimumSize(QtCore.QSize(0, 50))
+        self.widget_2.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.widget_2.setObjectName(_fromUtf8("widget_2"))
+        self.cmdComing = QtGui.QPushButton(self.widget_2)
+        self.cmdComing.setGeometry(QtCore.QRect(4, 13, 94, 24))
+        self.cmdComing.setObjectName(_fromUtf8("cmdComing"))
+        self.cmdLeaving = QtGui.QPushButton(self.widget_2)
+        self.cmdLeaving.setGeometry(QtCore.QRect(104, 13, 94, 24))
+        self.cmdLeaving.setObjectName(_fromUtf8("cmdLeaving"))
+        self.gridLayout.addWidget(self.widget_2, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tabTime, _fromUtf8("Приход / уход"))
         self.gridLayout_3.addWidget(self.tabWidget, 0, 0, 1, 1)
 
@@ -117,6 +122,8 @@ class Ui_frmMain(object):
         self.cmdRefresh.setText(QtGui.QApplication.translate("frmMain", "Обновить", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefresh.setShortcut(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
         self.statusLabel.setText(QtGui.QApplication.translate("frmMain", "Общее время", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdComing.setText(QtGui.QApplication.translate("frmMain", "Приход", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdLeaving.setText(QtGui.QApplication.translate("frmMain", "Уход", None, QtGui.QApplication.UnicodeUTF8))
 
 from timesheet_grid import timesheet_grid
 from task_list import tasks_status_label, task_list

@@ -8,6 +8,8 @@ from gui.Ui_main_form import *
 from login import *
 from task_list import *
 from errors import *
+from get_date_time import *
+from remote_functions import *
 
 class main_form(QtGui.QDialog):
     ui = None
@@ -29,6 +31,28 @@ class main_form(QtGui.QDialog):
         if self.ui.dt.date() != QtCore.QDate.currentDate():
             raise GuiException('Новая задача может быть создана только сегодняшним числом')
         self.tl.newItem()
+    
+    @QtCore.pyqtSlot()
+    def setNewComingTime(self):
+        date_time_str = GetDateTime(caption=u'Время прихода')
+        if date_time_str is not None:
+            try:
+                QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+                setComingTimeXML(self.tl.staff_id, date_time_str)
+            finally:
+                self.ui.tblWeek.updateForCurrentWeek()
+                QApplication.restoreOverrideCursor()
+    
+    @QtCore.pyqtSlot()
+    def setNewLeavingTime(self):
+        date_time_str = GetDateTime(caption=u'Время ухода')
+        if date_time_str is not None:
+            try:
+                QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+                setLeavingTimeXML(self.tl.staff_id, date_time_str)
+            finally:
+                self.ui.tblWeek.updateForCurrentWeek()
+                QApplication.restoreOverrideCursor()
 
 class tray_application(QtGui.QApplication):
     def __init__(self, argv):
@@ -106,6 +130,9 @@ def main():
         #
         app.main_form.ui.tblWeek.staff_id = staff_id
         app.main_form.ui.tblWeek.updateForCurrentWeek()
+        
+        QtCore.QObject.connect( app.main_form.ui.cmdComing,  QtCore.SIGNAL('clicked()'), app.main_form.setNewComingTime )
+        QtCore.QObject.connect( app.main_form.ui.cmdLeaving, QtCore.SIGNAL('clicked()'), app.main_form.setNewLeavingTime )
         
         sys.exit( app.exec_() )
 

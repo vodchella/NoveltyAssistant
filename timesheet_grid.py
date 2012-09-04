@@ -48,7 +48,7 @@ class timesheet_grid(QtGui.QTableWidget):
         monday_str = monday.strftime(REMOTE_DATE_FORMAT)
         sunday_str = sunday.strftime(REMOTE_DATE_FORMAT)
         
-        xml_str = GetTimesheetXML(self.staff_id, monday_str, sunday_str)
+        xml_str = getTimesheetXML(self.staff_id, monday_str, sunday_str)
         dom = parseString(xml_str)
         timesheets = dom.getElementsByTagName('TIMESHEET')
         last_table_row = -1

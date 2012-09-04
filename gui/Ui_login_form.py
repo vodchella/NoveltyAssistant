@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/login_form.ui'
 #
-# Created: Tue Jul 17 23:27:45 2012
+# Created: Tue Sep  4 22:13:18 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
