@@ -6,7 +6,7 @@ import base64
 from xml_utils import *
 from errors import GuiException
 
-HOST = 'home2.novelty.kz:28010'
+HOST = 'home2.novelty.kz:28110'
 URL = '/WebBridge/WebBridge'
 
 session_id = ''
@@ -17,12 +17,12 @@ user_id = 0
 def request(xml, SOAPAction):
     global session_id
 
-    h = httplib.HTTPConnection(HOST)
+    h = httplib.HTTPSConnection(HOST)
     headers={
         'Host':HOST,
         'Content-Type':'text/xml; charset=utf-8',
         'Content-Length':len(xml),
-        'SOAPAction':'"http://WebBridge.novelty.kz/%s"' % SOAPAction,
+        'SOAPAction':'"https://WebBridge.novelty.kz/%s"' % SOAPAction,
         }
     try:
         h.request ('POST', URL, body=xml, headers=headers)
