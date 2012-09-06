@@ -35,9 +35,9 @@ def setComingTimeXML(staff_id, date_time_str):
 def setLeavingTimeXML(staff_id, date_time_str):
     return get_data_xml("SetLeavingTime", "<PARAMS><STAFF_ID>%s</STAFF_ID><DATE_TIME>%s</DATE_TIME></PARAMS>" % (staff_id, date_time_str))
 
-def getAssistantVersion():
+def getProgramVersion():
     return int(get_xml_field_value(get_data_xml("GetAssistantVersion", ""),  'VERSION_NUMBER'))
 
-def setAssistantVersion(version_number):
+def setProgramVersion(version_number):
     vn = int(version_number)
     return get_data_xml("SetAssistantVersion", "<PARAMS><VERSION_NUMBER>%s</VERSION_NUMBER></PARAMS>" % vn)
