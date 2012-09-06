@@ -63,9 +63,9 @@ class timesheet_grid(QtGui.QTableWidget):
                 cur_date = datetime.datetime.strptime(end_datetime[:10], REMOTE_DATE_FORMAT).date()
             
             if cur_date is not None:
-                i = 0
+                i = last_table_row
                 for dt in self.week_dates[last_table_row + 1:]:
-                    i += last_table_row + 1
+                    i += 1
                     if dt == cur_date:
                         if beg_datetime is not None:
                             cell_beg = self.item(i, 1)
