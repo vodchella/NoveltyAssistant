@@ -482,6 +482,23 @@ class tasks_status_label(QtGui.QLabel):
                 self.setText('')
                 self.hide()
 
+class tasks_count_label(QtGui.QLabel):
+    task_list = None
+    
+    def __init__(self,  parent):
+        super(tasks_count_label,  self).__init__(parent)
+    
+    @QtCore.pyqtSlot()
+    def updateCount(self):
+        if self.task_list is not None:
+            l = len(self.task_list.items)
+            if l != 0:
+                self.setText(u'Количество задач: %s' % l)
+                self.show()
+            else:
+                self.setText('')
+                self.hide()
+
 class task_combo_box(QtGui.QComboBox):
     def __init__(self,  parent):
         super(task_combo_box,  self).__init__(parent)

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
+# Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
 #
-# Created: Tue Sep  4 22:13:18 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Mon Sep 10 18:11:04 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -67,7 +67,16 @@ class Ui_frmMain(object):
         self.tl = task_list(self.tabTasks)
         self.tl.setObjectName(_fromUtf8("tl"))
         self.gridLayout_2.addWidget(self.tl, 1, 0, 1, 1)
-        self.statusLabel = tasks_status_label(self.tabTasks)
+        self.statusWidget = QtGui.QWidget(self.tabTasks)
+        self.statusWidget.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.statusWidget.setObjectName(_fromUtf8("statusWidget"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout(self.statusWidget)
+        self.horizontalLayout_2.setMargin(0)
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.countLabel = tasks_count_label(self.statusWidget)
+        self.countLabel.setObjectName(_fromUtf8("countLabel"))
+        self.horizontalLayout_2.addWidget(self.countLabel)
+        self.statusLabel = tasks_status_label(self.statusWidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -75,7 +84,8 @@ class Ui_frmMain(object):
         self.statusLabel.setSizePolicy(sizePolicy)
         self.statusLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.statusLabel.setObjectName(_fromUtf8("statusLabel"))
-        self.gridLayout_2.addWidget(self.statusLabel, 2, 0, 1, 1)
+        self.horizontalLayout_2.addWidget(self.statusLabel)
+        self.gridLayout_2.addWidget(self.statusWidget, 2, 0, 1, 1)
         self.tabWidget.addTab(self.tabTasks, _fromUtf8("Задачи"))
         self.tabTime = QtGui.QWidget()
         self.tabTime.setObjectName(_fromUtf8("tabTime"))
@@ -121,12 +131,13 @@ class Ui_frmMain(object):
         self.cmdRefresh.setToolTip(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefresh.setText(QtGui.QApplication.translate("frmMain", "Обновить", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefresh.setShortcut(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
+        self.countLabel.setText(QtGui.QApplication.translate("frmMain", "Количество задач", None, QtGui.QApplication.UnicodeUTF8))
         self.statusLabel.setText(QtGui.QApplication.translate("frmMain", "Общее время", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdComing.setText(QtGui.QApplication.translate("frmMain", "Приход", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdLeaving.setText(QtGui.QApplication.translate("frmMain", "Уход", None, QtGui.QApplication.UnicodeUTF8))
 
 from timesheet_grid import timesheet_grid
-from task_list import tasks_status_label, task_list
+from task_list import tasks_count_label, tasks_status_label, task_list
 import novelty_assistant_rc
 
 if __name__ == "__main__":

@@ -169,7 +169,10 @@ def main():
             app.main_form.tl.staff_id = staff_id
             
             app.main_form.ui.statusLabel.task_list = app.main_form.tl
+            app.main_form.ui.countLabel.task_list  = app.main_form.tl
 
+            # По-хорошему, надо бы реализовать отдельное событие для countLabel, но пока лень :)
+            QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.ui.countLabel.updateCount )
             QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.ui.statusLabel.updateStatus )
             QtCore.QObject.connect( app.main_form.ui.cmdNew, QtCore.SIGNAL('clicked()'), app.main_form.addTask )
             QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.refreshTaskList )
