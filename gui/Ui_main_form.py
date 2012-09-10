@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
+# Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
 #
-# Created: Mon Sep 10 18:11:04 2012
-#      by: PyQt4 UI code generator 4.9.4
+# Created: Mon Sep 10 19:37:57 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -68,7 +68,7 @@ class Ui_frmMain(object):
         self.tl.setObjectName(_fromUtf8("tl"))
         self.gridLayout_2.addWidget(self.tl, 1, 0, 1, 1)
         self.statusWidget = QtGui.QWidget(self.tabTasks)
-        self.statusWidget.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.statusWidget.setMaximumSize(QtCore.QSize(16777215, 35))
         self.statusWidget.setObjectName(_fromUtf8("statusWidget"))
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.statusWidget)
         self.horizontalLayout_2.setMargin(0)

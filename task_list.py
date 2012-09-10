@@ -32,6 +32,7 @@ class task_list(QtGui.QScrollArea):
         super(task_list, self).__init__(parent)
         self.startEditNewItem = QtCore.pyqtSignal()
         self.totalTimeChanged = QtCore.pyqtSignal()
+        self.totalCountChanged = QtCore.pyqtSignal()
 
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setWidgetResizable(True)
@@ -91,6 +92,7 @@ class task_list(QtGui.QScrollArea):
             item.group_id = i_group_id
             self.total_time += item.time_value
             QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
+            QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
             QtCore.QObject.connect( self, QtCore.SIGNAL('startEditNewItem()'), item.stopEdit )
             QtCore.QObject.connect( item, QtCore.SIGNAL('beforeEditItem()'), self.beforeEditNewItem )
         else:
@@ -116,6 +118,7 @@ class task_list(QtGui.QScrollArea):
         
         item.setParent(None)
         del self.items[index], item
+        QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
         self.updateItemsIndexes()
         
         if (items_count_in_group == 1) and (group_id != -1):
@@ -146,6 +149,7 @@ class task_list(QtGui.QScrollArea):
             del self.groups[i]
         self.total_time = 0
         QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
+        QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
     
     @QtCore.pyqtSlot()
     def newItem(self):

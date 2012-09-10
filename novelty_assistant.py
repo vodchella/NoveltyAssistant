@@ -105,7 +105,7 @@ class tray_application(QtGui.QApplication):
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             last_version_number = getProgramVersion()
             QApplication.restoreOverrideCursor()
-            if last_version_number > PROGRAM_VERSION_NUMBER:
+            if last_version_number > PROGRAM_REVISION_NUMBER:
                 if QtGui.QMessageBox.question(None, PROGRAM_NAME, u'Доступна новая версия программы. Перейти на страницу загрузки?', QtGui.QMessageBox.Yes |  QtGui.QMessageBox.No, QtGui.QMessageBox.Yes) == QtGui.QMessageBox.Yes:
                     QDesktopServices.openUrl(QUrl('https://launchpad.net/novelty-assistant/+download'))
             else:
@@ -171,8 +171,7 @@ def main():
             app.main_form.ui.statusLabel.task_list = app.main_form.tl
             app.main_form.ui.countLabel.task_list  = app.main_form.tl
 
-            # По-хорошему, надо бы реализовать отдельное событие для countLabel, но пока лень :)
-            QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.ui.countLabel.updateCount )
+            QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalCountChanged()'), app.main_form.ui.countLabel.updateCount )
             QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.ui.statusLabel.updateStatus )
             QtCore.QObject.connect( app.main_form.ui.cmdNew, QtCore.SIGNAL('clicked()'), app.main_form.addTask )
             QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.refreshTaskList )
