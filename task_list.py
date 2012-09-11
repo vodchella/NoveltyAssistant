@@ -91,8 +91,9 @@ class task_list(QtGui.QScrollArea):
             item.item_index = len(self.items) - 1
             item.group_id = i_group_id
             self.total_time += item.time_value
+            if i_group_id != -1:
+                QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
             QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
-            QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
             QtCore.QObject.connect( self, QtCore.SIGNAL('startEditNewItem()'), item.stopEdit )
             QtCore.QObject.connect( item, QtCore.SIGNAL('beforeEditItem()'), self.beforeEditNewItem )
         else:
@@ -130,6 +131,8 @@ class task_list(QtGui.QScrollArea):
             item = self.items[item_index]
             item.parent = gr
             gr.vl.addWidget(item)
+            if (item.group_id == -1) and (new_group_id != -1):
+                QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
             item.group_id = new_group_id
     
     def updateItemsIndexes(self):
