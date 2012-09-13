@@ -12,12 +12,17 @@ from remote_functions import *
 REMOTE_DATE_FORMAT = '%d.%m.%Y'
 
 week_days = [u'Понедельник', u'Вторник', u'Среда', u'Четверг', u'Пятница', u'Суббота', u'Воскресение']
-column_captions = [u'День недели', u'Приход', u'Уход']
+column_captions = [u'Дата', u'День недели', u'Приход', u'Уход']
 
 class timesheet_grid(QtGui.QTableWidget):
     bInitialized = False
     staff_id = 0
     week_dates = []
+    red_brush = QBrush(QColor('red'))
+    
+    def setCellColors(self, row, cell):
+        if row > 4:
+            cell.setForeground(self.red_brush)
     
     def __init__(self,  parent):
         super(timesheet_grid, self).__init__(parent)
@@ -25,16 +30,24 @@ class timesheet_grid(QtGui.QTableWidget):
         today = datetime.date.today()
         monday = today - datetime.timedelta(days=today.weekday())
         
-        self.setColumnCount(3)
+        self.setColumnCount(4)
         self.setHorizontalHeaderLabels(column_captions)
         red_brush = QBrush(QColor('red'))
         for i in range(0, 7):
             self.week_dates.append(monday + datetime.timedelta(days=i))
             self.insertRow(i)
-            cell = QTableWidgetItem(week_days[i])
-            if i > 4: cell.setForeground(red_brush)
+            
+            # Дата
+            cell = QTableWidgetItem(self.week_dates[i].strftime('%d.%m.%Y'))
+            self.setCellColors(i, cell)
             self.setItem(i, 0, cell)
-            for j in range(1, 3):                
+            
+            # День недели
+            cell = QTableWidgetItem(week_days[i])
+            self.setCellColors(i, cell)
+            self.setItem(i, 1, cell)
+            
+            for j in range(2, 4):                
                 cell = QTableWidgetItem('-')
                 if i > 4: cell.setForeground(red_brush)
                 self.setItem(i, j, cell)
@@ -68,10 +81,10 @@ class timesheet_grid(QtGui.QTableWidget):
                     i += 1
                     if dt == cur_date:
                         if beg_datetime is not None:
-                            cell_beg = self.item(i, 1)
+                            cell_beg = self.item(i, 2)
                             cell_beg.setText(beg_datetime[11:])
                         if end_datetime is not None:
-                            cell_end = self.item(i, 2)
+                            cell_end = self.item(i, 3)
                             cell_end.setText(end_datetime[11:])
                         last_table_row = i
                         break

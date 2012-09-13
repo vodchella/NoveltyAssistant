@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
 #
-# Created: Mon Sep 10 19:37:57 2012
+# Created: Thu Sep 13 21:03:54 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_frmMain(object):
     def setupUi(self, frmMain):
         frmMain.setObjectName(_fromUtf8("frmMain"))
-        frmMain.resize(410, 399)
+        frmMain.resize(467, 399)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

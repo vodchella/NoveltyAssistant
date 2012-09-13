@@ -152,7 +152,7 @@ def main():
         
         try:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-            
+
             staff_id = getStaffByUser(user_id)
             fillCache()
             
