@@ -11,6 +11,7 @@ from errors import *
 from get_date_time import *
 from remote_functions import *
 from constants import *
+from str_utils import *
 
 class main_form(QtGui.QDialog):
     ui = None

@@ -6,6 +6,7 @@ from PyQt4.QtGui import QApplication, QCursor
 
 from xml.dom.minidom import parseString
 from xml_utils import *
+from str_utils import *
 from remote_functions import *
 from errors import GuiException
 from cache import *
@@ -222,7 +223,7 @@ class task_group(QtGui.QFrame):
         self.vl.setMargin(5)
         self.show()
         
-        self.label = QtGui.QLabel(self)
+        self.label = task_label(self)
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
@@ -259,8 +260,6 @@ class task_item(QtGui.QFrame):
         self.pgView.show()
 
         self.lblDesc = task_label(self.pgView)
-        self.lblDesc.setTextFormat(QtCore.Qt.PlainText)
-        self.lblDesc.setWordWrap(True)
         QtCore.QObject.connect( self.lblDesc, QtCore.SIGNAL('clicked()'), self.beginEdit )
         self.vlView.addWidget(self.lblDesc)
         
@@ -466,9 +465,29 @@ class task_item(QtGui.QFrame):
 
 
 class task_label(QtGui.QLabel):
+    plain_text = ''
+    
     def __init__(self,  parent):
         super(task_label,  self).__init__(parent)
+        self.setTextFormat(QtCore.Qt.RichText)
+        self.setWordWrap(True)
         self.clicked = QtCore.pyqtSignal()
+    
+    def formatHtml(self, html_text):
+        return html_text.replace('\n', '<br>')
+    
+    def setText(self, caption):
+        self.plain_text = caption
+        super(task_label, self).setText(self.formatHtml(caption))
+    
+    def text(self):
+        return self.plain_text
+    
+    def highlightText(self, str, backcolor='yellow'):
+        super(task_label, self).setText(self.formatHtml(ireplace_ex(self.plain_text, str, u'<font style=background-color:%s>##OLD##</font>' % backcolor)))
+    
+    def clearHighlighting(self):
+        super(task_label, self).setText(self.formatHtml(self.plain_text))
     
     def mouseReleaseEvent(self, event):
         QtCore.QObject.emit( self, QtCore.SIGNAL('clicked()') )
