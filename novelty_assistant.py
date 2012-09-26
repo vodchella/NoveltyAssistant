@@ -113,7 +113,12 @@ class tray_application(QtGui.QApplication):
             last_version_number = getProgramVersion()
             QApplication.restoreOverrideCursor()
             if last_version_number > PROGRAM_REVISION_NUMBER:
-                if QtGui.QMessageBox.question(None, PROGRAM_NAME, u'Доступна новая версия программы. Перейти на страницу загрузки?', QtGui.QMessageBox.Yes |  QtGui.QMessageBox.No, QtGui.QMessageBox.Yes) == QtGui.QMessageBox.Yes:
+                new_in_version = getNewInVersion()
+                if new_in_version is not None:
+                    new_in_version = u"<br><br>Новое в версии:<br>%s" % new_in_version
+                else:
+                    new_in_version = ''
+                if QtGui.QMessageBox.question(None, PROGRAM_NAME, u'Доступна новая версия программы. Перейти на страницу загрузки?%s' % new_in_version, QtGui.QMessageBox.Yes |  QtGui.QMessageBox.No, QtGui.QMessageBox.Yes) == QtGui.QMessageBox.Yes:
                     QDesktopServices.openUrl(QUrl('https://launchpad.net/novelty-assistant/+download'))
             else:
                 if msgbox_if_false:
@@ -135,7 +140,6 @@ class tray_application(QtGui.QApplication):
         label = QtGui.QLabel( u"%s<br><br>Twister© 2012 для компании <a href='http://novelty.kz'>Novelty</a><br><br><a href='https://launchpad.net/novelty-assistant/'>https://launchpad.net/novelty-assistant/</a>" % PROGRAM_NAME_FULL )
         label.setWordWrap( True )
         label.setOpenExternalLinks( True )
-
         s.layout().addWidget( label )
 
         button = QtGui.QPushButton( "Ok" )
