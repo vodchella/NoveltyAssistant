@@ -31,7 +31,8 @@ class task_list(QtGui.QScrollArea):
     
     def __init__(self,  parent):
         super(task_list, self).__init__(parent)
-        self.startEditNewItem = QtCore.pyqtSignal()
+        self.startEditItem = QtCore.pyqtSignal()
+        self.stopEditAllItems = QtCore.pyqtSignal()
         self.totalTimeChanged = QtCore.pyqtSignal()
         self.totalCountChanged = QtCore.pyqtSignal()
 
@@ -95,7 +96,8 @@ class task_list(QtGui.QScrollArea):
             if i_group_id != -1:
                 QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
             QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
-            QtCore.QObject.connect( self, QtCore.SIGNAL('startEditNewItem()'), item.stopEdit )
+            QtCore.QObject.connect( self, QtCore.SIGNAL('startEditItem()'), item.stopEdit )
+            QtCore.QObject.connect( self, QtCore.SIGNAL('stopEditAllItems()'), item.stopEdit )
             QtCore.QObject.connect( item, QtCore.SIGNAL('beforeEditItem()'), self.beforeEditNewItem )
         else:
             raise GuiException('Группа с id равным %i не существует' % i_group_id)
@@ -170,7 +172,7 @@ class task_list(QtGui.QScrollArea):
             self.clear()
             
             gr = task_group(self)
-            gr.setCaption(u'<Новая задача>')
+            gr.setCaption(u"[Новая задача]")
             self.addGroup(gr, -1)
             gr.hide()
             
@@ -199,7 +201,7 @@ class task_list(QtGui.QScrollArea):
     
     @QtCore.pyqtSlot()
     def beforeEditNewItem(self):
-        QtCore.QObject.emit( self, QtCore.SIGNAL('startEditNewItem()') )
+        QtCore.QObject.emit( self, QtCore.SIGNAL('startEditItem()') )
     
     def hideNewItemGroup(self):
         gr = self.getGroupById(-1)

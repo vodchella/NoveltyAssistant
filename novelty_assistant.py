@@ -61,6 +61,17 @@ class main_form(QtGui.QDialog):
         ob_name = self.ui.tabWidget.widget(index).objectName()
         if ob_name == 'tabTime':
             self.ui.tblWeek.updateForCurrentWeek()
+    
+    @QtCore.pyqtSlot()
+    def startSearching(self):
+        QtCore.QObject.emit( self.tl, QtCore.SIGNAL('stopEditAllItems()') )
+        self.ui.searchWidget.show()
+        self.ui.txtSearchText.setFocus()
+        self.ui.txtSearchText.selectAll()
+    
+    @QtCore.pyqtSlot()
+    def stopSearching(self):
+        self.ui.searchWidget.hide()
 
 class tray_application(QtGui.QApplication):
     def __init__(self, argv):
@@ -170,6 +181,7 @@ def main():
             app.main_form = main_form()
             app.main_form.ui = Ui_frmMain()
             app.main_form.ui.setupUi(app.main_form)
+            app.main_form.ui.searchWidget.hide()
             app.main_form.setWindowTitle(PROGRAM_NAME_FULL)
             app.main_form.show()
             
@@ -184,8 +196,11 @@ def main():
 
             QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalCountChanged()'), app.main_form.ui.countLabel.updateCount )
             QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.ui.statusLabel.updateStatus )
+            QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('startEditItem()'), app.main_form.stopSearching )
             QtCore.QObject.connect( app.main_form.ui.cmdNew, QtCore.SIGNAL('clicked()'), app.main_form.addTask )
             QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.refreshTaskList )
+            QtCore.QObject.connect( app.main_form.ui.cmdSearch, QtCore.SIGNAL('clicked()'), app.main_form.startSearching )
+            QtCore.QObject.connect( app.main_form.ui.cmdCancelSearch, QtCore.SIGNAL('clicked()'), app.main_form.stopSearching )
             QtCore.QObject.connect( app.main_form.ui.dt, QtCore.SIGNAL('dateChanged(QDate)'), app.main_form.tl.updateOnDate )
             app.main_form.ui.dt.setDate(QtCore.QDate.currentDate())
             

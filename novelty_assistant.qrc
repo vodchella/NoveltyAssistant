@@ -3,5 +3,7 @@
     <file alias="main_64.ico">img/ico/main_64.ico</file>
     <file alias="pass_64.ico">img/ico/pass_64.ico</file>
     <file alias="date_time_64.ico">img/ico/date_time_64.ico</file>
+    <file alias="search_16.ico">img/ico/search_16.ico</file>
+    <file alias="cancel_16.ico">img/ico/cancel_16.ico</file>
   </qresource>
 </RCC>

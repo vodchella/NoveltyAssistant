@@ -41,21 +41,59 @@
      </property>
      <widget class="QWidget" name="tabTasks">
       <attribute name="title">
-       <string notr="true">Задачи</string>
+       <string notr="true">Выполненные работы</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
+       <item row="3" column="0">
+        <widget class="QWidget" name="statusWidget" native="true">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>35</height>
+          </size>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="tasks_count_label" name="countLabel">
+            <property name="text">
+             <string>Количество задач</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="tasks_status_label" name="statusLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Общее время</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="task_list" name="tl" native="true"/>
+       </item>
        <item row="0" column="0">
         <widget class="QFrame" name="frame">
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>34</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>50</height>
+           <height>34</height>
           </size>
          </property>
          <property name="frameShape">
@@ -78,6 +116,29 @@
             </property>
             <property name="autoDefault">
              <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdSearch">
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Поиск (CTRL+F)</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../novelty_assistant.qrc">
+              <normaloff>:/images/search_16.ico</normaloff>:/images/search_16.ico</iconset>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+F</string>
             </property>
            </widget>
           </item>
@@ -134,39 +195,72 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="task_list" name="tl" native="true"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QWidget" name="statusWidget" native="true">
+        <widget class="QWidget" name="searchWidget" native="true">
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>35</height>
+           <height>34</height>
           </size>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
-           <widget class="tasks_count_label" name="countLabel">
+           <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Количество задач</string>
+             <string>Поиск:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="tasks_status_label" name="statusLabel">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QLineEdit" name="txtSearchText">
+            <property name="minimumSize">
+             <size>
+              <width>220</width>
+              <height>0</height>
+             </size>
             </property>
-            <property name="text">
-             <string>Общее время</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <property name="maximumSize">
+             <size>
+              <width>220</width>
+              <height>16777215</height>
+             </size>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdCancelSearch">
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Отмена (ESC)</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../novelty_assistant.qrc">
+              <normaloff>:/images/cancel_16.ico</normaloff>:/images/cancel_16.ico</iconset>
+            </property>
+            <property name="shortcut">
+             <string>Esc</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -196,41 +290,68 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>34</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>50</height>
+           <height>34</height>
           </size>
          </property>
-         <widget class="QPushButton" name="cmdComing">
-          <property name="geometry">
-           <rect>
-            <x>4</x>
-            <y>13</y>
-            <width>94</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Приход</string>
-          </property>
-         </widget>
-         <widget class="QPushButton" name="cmdLeaving">
-          <property name="geometry">
-           <rect>
-            <x>104</x>
-            <y>13</y>
-            <width>94</width>
-            <height>24</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Уход</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="cmdComing">
+            <property name="minimumSize">
+             <size>
+              <width>69</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>69</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Приход</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdLeaving">
+            <property name="minimumSize">
+             <size>
+              <width>69</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>69</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Уход</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
