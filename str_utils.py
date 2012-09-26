@@ -6,7 +6,7 @@ def ireplace(txt, old, new):
     text = txt
     len_old = len(old)
     len_new = len(new)
-    old_u = old.upper()
+    old_u = unicode(old).upper()
     while idx < len(text):
         index_u = text[idx:].upper().find(old_u)
         if index_u == -1:
@@ -24,7 +24,7 @@ def ireplace_ex(txt, old, new):
     idx = 0
     text = txt
     len_old = len(old)
-    old_u = old.upper()
+    old_u = unicode(old).upper()
     while idx < len(text):
         index_u = text[idx:].upper().find(old_u)
         if index_u == -1:

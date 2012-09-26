@@ -24,6 +24,7 @@ def getTimeText(minutes):
             return u'%s ч. %s мин.' % (hours, minutes_remainder)
 
 class task_list(QtGui.QScrollArea):
+    main_form = None
     groups  = []
     items   = []
     staff_id = 0
@@ -58,6 +59,7 @@ class task_list(QtGui.QScrollArea):
             self.vl2.addWidget(group)
             self.groups.append(group)
             group.group_index = len(self.groups) - 1
+            QtCore.QObject.connect( self.main_form, QtCore.SIGNAL('clearAllSearchSelectionsInTaskList()'), group.label.clearHighlighting )
     
     def removeGroup(self, group_id):
         i_group_id = int(group_id)
@@ -99,6 +101,8 @@ class task_list(QtGui.QScrollArea):
             QtCore.QObject.connect( self, QtCore.SIGNAL('startEditItem()'), item.stopEdit )
             QtCore.QObject.connect( self, QtCore.SIGNAL('stopEditAllItems()'), item.stopEdit )
             QtCore.QObject.connect( item, QtCore.SIGNAL('beforeEditItem()'), self.beforeEditNewItem )
+            QtCore.QObject.connect( self.main_form, QtCore.SIGNAL('clearAllSearchSelectionsInTaskList()'), item.lblDesc.clearHighlighting )
+            QtCore.QObject.connect( self.main_form, QtCore.SIGNAL('clearAllSearchSelectionsInTaskList()'), item.lblTime.clearHighlighting )
         else:
             raise GuiException('Группа с id равным %i не существует' % i_group_id)
     
@@ -236,6 +240,9 @@ class task_group(QtGui.QFrame):
     
     def setCaption(self, caption):
         self.label.setText(caption)
+    
+    def caption(self):
+        return self.label.text()
 
 
 class task_item(QtGui.QFrame):
@@ -488,6 +495,7 @@ class task_label(QtGui.QLabel):
     def highlightText(self, str, backcolor='yellow'):
         super(task_label, self).setText(self.formatHtml(ireplace_ex(self.plain_text, str, u'<font style=background-color:%s>##OLD##</font>' % backcolor)))
     
+    @QtCore.pyqtSlot()
     def clearHighlighting(self):
         super(task_label, self).setText(self.formatHtml(self.plain_text))
     

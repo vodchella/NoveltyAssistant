@@ -19,6 +19,7 @@ class main_form(QtGui.QDialog):
     
     def __init__(self):
         super(main_form,  self).__init__()
+        self.clearAllSearchSelectionsInTaskList = QtCore.pyqtSignal()
     
     def closeEvent(self, event):
         event.ignore()
@@ -65,13 +66,71 @@ class main_form(QtGui.QDialog):
     @QtCore.pyqtSlot()
     def startSearching(self):
         QtCore.QObject.emit( self.tl, QtCore.SIGNAL('stopEditAllItems()') )
+        self.ui.txtSearchText.setPalette(self.createDefaultPalette())
         self.ui.searchWidget.show()
         self.ui.txtSearchText.setFocus()
         self.ui.txtSearchText.selectAll()
     
     @QtCore.pyqtSlot()
     def stopSearching(self):
+        QtCore.QObject.emit( self, QtCore.SIGNAL('clearAllSearchSelectionsInTaskList()') )
         self.ui.searchWidget.hide()
+    
+    def createNotFoundPalette(self):
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 4, 0))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 4, 0))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(169, 167, 167))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
+        brush = QtGui.QBrush(QtGui.QColor(244, 244, 244))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
+        return palette
+    
+    def createDefaultPalette(self):
+        return self.ui.tabWidget.palette()
+    
+    @QtCore.pyqtSlot()
+    def searchForText(self, text):
+        def highlightLabelIfNeed(label):
+            caption = label.text()
+            if caption.upper().find(txt_u) != -1:
+                label.highlightText(text)
+                return label
+        
+        QtCore.QObject.emit( self, QtCore.SIGNAL('clearAllSearchSelectionsInTaskList()') )
+        first_widget = None
+        
+        txt_u = unicode(text).upper().strip()
+        if len(txt_u) != 0:
+            for gr in self.tl.groups:
+                if gr.group_id != -1:
+                    widget = highlightLabelIfNeed(gr.label)
+                    if first_widget is None: first_widget = widget
+                    for item in self.tl.items:
+                        if item.group_id == gr.group_id:
+                            widget = highlightLabelIfNeed(item.lblDesc)
+                            if first_widget is None: first_widget = widget
+                            widget = highlightLabelIfNeed(item.lblTime)
+                            if first_widget is None: first_widget = widget
+            if first_widget is not None:
+                self.tl.ensureWidgetVisible(first_widget)
+                self.ui.txtSearchText.setPalette(self.createDefaultPalette())
+            else:
+                self.ui.txtSearchText.setPalette(self.createNotFoundPalette())
+        else:
+            self.ui.txtSearchText.setPalette(self.createDefaultPalette())
 
 class tray_application(QtGui.QApplication):
     def __init__(self, argv):
@@ -189,6 +248,7 @@ def main():
             # Tasks
             #
             app.main_form.tl = app.main_form.ui.tl
+            app.main_form.tl.main_form = app.main_form
             app.main_form.tl.staff_id = staff_id
             
             app.main_form.ui.statusLabel.task_list = app.main_form.tl
@@ -199,9 +259,12 @@ def main():
             QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('startEditItem()'), app.main_form.stopSearching )
             QtCore.QObject.connect( app.main_form.ui.cmdNew, QtCore.SIGNAL('clicked()'), app.main_form.addTask )
             QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.refreshTaskList )
+            QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.stopSearching )
             QtCore.QObject.connect( app.main_form.ui.cmdSearch, QtCore.SIGNAL('clicked()'), app.main_form.startSearching )
             QtCore.QObject.connect( app.main_form.ui.cmdCancelSearch, QtCore.SIGNAL('clicked()'), app.main_form.stopSearching )
+            QtCore.QObject.connect( app.main_form.ui.txtSearchText, QtCore.SIGNAL('textChanged(QString)'), app.main_form.searchForText )
             QtCore.QObject.connect( app.main_form.ui.dt, QtCore.SIGNAL('dateChanged(QDate)'), app.main_form.tl.updateOnDate )
+            QtCore.QObject.connect( app.main_form.ui.dt, QtCore.SIGNAL('dateChanged(QDate)'), app.main_form.stopSearching )
             app.main_form.ui.dt.setDate(QtCore.QDate.currentDate())
             
             #
