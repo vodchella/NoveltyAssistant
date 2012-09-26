@@ -55,6 +55,12 @@ class main_form(QtGui.QDialog):
             finally:
                 self.ui.tblWeek.updateForCurrentWeek()
                 QApplication.restoreOverrideCursor()
+    
+    @QtCore.pyqtSlot()
+    def tabChanged(self, index):
+        ob_name = self.ui.tabWidget.widget(index).objectName()
+        if ob_name == 'tabTime':
+            self.ui.tblWeek.updateForCurrentWeek()
 
 class tray_application(QtGui.QApplication):
     def __init__(self, argv):
@@ -183,10 +189,13 @@ def main():
             # Time
             #
             app.main_form.ui.tblWeek.staff_id = staff_id
-            app.main_form.ui.tblWeek.updateForCurrentWeek()
-            
             QtCore.QObject.connect( app.main_form.ui.cmdComing,  QtCore.SIGNAL('clicked()'), app.main_form.setNewComingTime )
             QtCore.QObject.connect( app.main_form.ui.cmdLeaving, QtCore.SIGNAL('clicked()'), app.main_form.setNewLeavingTime )
+            
+            #
+            # Other
+            #
+            QtCore.QObject.connect( app.main_form.ui.tabWidget, QtCore.SIGNAL('currentChanged(int)'), app.main_form.tabChanged )
         finally:
             QApplication.restoreOverrideCursor()
         
