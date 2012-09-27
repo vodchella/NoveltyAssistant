@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
+# Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
 #
-# Created: Thu Sep 27 00:26:49 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Sep 27 09:44:55 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -60,8 +60,8 @@ class Ui_frmMain(object):
         self.tl.setObjectName(_fromUtf8("tl"))
         self.gridLayout_2.addWidget(self.tl, 2, 0, 1, 1)
         self.frame = QtGui.QFrame(self.tabTasks)
-        self.frame.setMinimumSize(QtCore.QSize(0, 34))
-        self.frame.setMaximumSize(QtCore.QSize(16777215, 34))
+        self.frame.setMinimumSize(QtCore.QSize(0, 40))
+        self.frame.setMaximumSize(QtCore.QSize(16777215, 40))
         self.frame.setFrameShape(QtGui.QFrame.NoFrame)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName(_fromUtf8("frame"))
@@ -77,6 +77,7 @@ class Ui_frmMain(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/search_16.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.cmdSearch.setIcon(icon1)
+        self.cmdSearch.setAutoDefault(False)
         self.cmdSearch.setObjectName(_fromUtf8("cmdSearch"))
         self.horizontalLayout.addWidget(self.cmdSearch)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -95,7 +96,8 @@ class Ui_frmMain(object):
         self.horizontalLayout.addWidget(self.cmdRefresh)
         self.gridLayout_2.addWidget(self.frame, 0, 0, 1, 1)
         self.searchWidget = QtGui.QWidget(self.tabTasks)
-        self.searchWidget.setMaximumSize(QtCore.QSize(16777215, 34))
+        self.searchWidget.setMinimumSize(QtCore.QSize(0, 40))
+        self.searchWidget.setMaximumSize(QtCore.QSize(16777215, 40))
         self.searchWidget.setObjectName(_fromUtf8("searchWidget"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout(self.searchWidget)
         self.horizontalLayout_3.setMargin(0)
@@ -114,6 +116,7 @@ class Ui_frmMain(object):
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/cancel_16.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.cmdCancelSearch.setIcon(icon2)
+        self.cmdCancelSearch.setAutoDefault(False)
         self.cmdCancelSearch.setObjectName(_fromUtf8("cmdCancelSearch"))
         self.horizontalLayout_3.addWidget(self.cmdCancelSearch)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -137,8 +140,8 @@ class Ui_frmMain(object):
         self.verticalLayout.addWidget(self.tblWeek)
         self.gridLayout.addWidget(self.widget_3, 1, 0, 1, 1)
         self.widget_2 = QtGui.QWidget(self.tabTime)
-        self.widget_2.setMinimumSize(QtCore.QSize(0, 34))
-        self.widget_2.setMaximumSize(QtCore.QSize(16777215, 34))
+        self.widget_2.setMinimumSize(QtCore.QSize(0, 40))
+        self.widget_2.setMaximumSize(QtCore.QSize(16777215, 40))
         self.widget_2.setObjectName(_fromUtf8("widget_2"))
         self.horizontalLayout_4 = QtGui.QHBoxLayout(self.widget_2)
         self.horizontalLayout_4.setMargin(0)
@@ -146,11 +149,13 @@ class Ui_frmMain(object):
         self.cmdComing = QtGui.QPushButton(self.widget_2)
         self.cmdComing.setMinimumSize(QtCore.QSize(69, 0))
         self.cmdComing.setMaximumSize(QtCore.QSize(69, 16777215))
+        self.cmdComing.setAutoDefault(False)
         self.cmdComing.setObjectName(_fromUtf8("cmdComing"))
         self.horizontalLayout_4.addWidget(self.cmdComing)
         self.cmdLeaving = QtGui.QPushButton(self.widget_2)
         self.cmdLeaving.setMinimumSize(QtCore.QSize(69, 0))
         self.cmdLeaving.setMaximumSize(QtCore.QSize(69, 16777215))
+        self.cmdLeaving.setAutoDefault(False)
         self.cmdLeaving.setObjectName(_fromUtf8("cmdLeaving"))
         self.horizontalLayout_4.addWidget(self.cmdLeaving)
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)

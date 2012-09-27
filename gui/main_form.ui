@@ -87,13 +87,13 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>34</height>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>34</height>
+           <height>40</height>
           </size>
          </property>
          <property name="frameShape">
@@ -139,6 +139,9 @@
             </property>
             <property name="shortcut">
              <string>Ctrl+F</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -196,10 +199,16 @@
        </item>
        <item row="1" column="0">
         <widget class="QWidget" name="searchWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>34</height>
+           <height>40</height>
           </size>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -247,6 +256,9 @@
             <property name="shortcut">
              <string>Esc</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -290,13 +302,13 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>34</height>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>34</height>
+           <height>40</height>
           </size>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -317,6 +329,9 @@
             <property name="text">
              <string>Приход</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -335,6 +350,9 @@
             </property>
             <property name="text">
              <string>Уход</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
