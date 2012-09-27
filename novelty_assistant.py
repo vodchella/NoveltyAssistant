@@ -104,7 +104,7 @@ class main_form(QtGui.QDialog):
     @QtCore.pyqtSlot()
     def searchForText(self, text):
         def highlightLabelIfNeed(label):
-            caption = label.text()
+            caption = unicode(label.text())
             if caption.upper().find(txt_u) != -1:
                 label.highlightText(text)
                 return label
