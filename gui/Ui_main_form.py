@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
 #
-# Created: Thu Sep 27 09:44:55 2012
+# Created: Thu Sep 27 12:48:10 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -66,6 +66,7 @@ class Ui_frmMain(object):
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName(_fromUtf8("frame"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.frame)
+        self.horizontalLayout.setContentsMargins(0, -1, 0, -1)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.cmdNew = QtGui.QPushButton(self.frame)
         self.cmdNew.setAutoDefault(False)
@@ -96,11 +97,11 @@ class Ui_frmMain(object):
         self.horizontalLayout.addWidget(self.cmdRefresh)
         self.gridLayout_2.addWidget(self.frame, 0, 0, 1, 1)
         self.searchWidget = QtGui.QWidget(self.tabTasks)
-        self.searchWidget.setMinimumSize(QtCore.QSize(0, 40))
-        self.searchWidget.setMaximumSize(QtCore.QSize(16777215, 40))
+        self.searchWidget.setMinimumSize(QtCore.QSize(0, 34))
+        self.searchWidget.setMaximumSize(QtCore.QSize(16777215, 34))
         self.searchWidget.setObjectName(_fromUtf8("searchWidget"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout(self.searchWidget)
-        self.horizontalLayout_3.setMargin(0)
+        self.horizontalLayout_3.setContentsMargins(-1, 0, -1, 0)
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.label_2 = QtGui.QLabel(self.searchWidget)
         self.label_2.setObjectName(_fromUtf8("label_2"))
@@ -131,6 +132,7 @@ class Ui_frmMain(object):
         self.widget_3.setObjectName(_fromUtf8("widget_3"))
         self.verticalLayout = QtGui.QVBoxLayout(self.widget_3)
         self.verticalLayout.setMargin(0)
+        self.verticalLayout.setMargin(0)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tblWeek = timesheet_grid(self.widget_3)
         self.tblWeek.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
@@ -144,7 +146,7 @@ class Ui_frmMain(object):
         self.widget_2.setMaximumSize(QtCore.QSize(16777215, 40))
         self.widget_2.setObjectName(_fromUtf8("widget_2"))
         self.horizontalLayout_4 = QtGui.QHBoxLayout(self.widget_2)
-        self.horizontalLayout_4.setMargin(0)
+        self.horizontalLayout_4.setContentsMargins(0, -1, 0, -1)
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
         self.cmdComing = QtGui.QPushButton(self.widget_2)
         self.cmdComing.setMinimumSize(QtCore.QSize(69, 0))
@@ -160,6 +162,10 @@ class Ui_frmMain(object):
         self.horizontalLayout_4.addWidget(self.cmdLeaving)
         spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_4.addItem(spacerItem2)
+        self.cmdRefreshTimeSheet = QtGui.QPushButton(self.widget_2)
+        self.cmdRefreshTimeSheet.setAutoDefault(False)
+        self.cmdRefreshTimeSheet.setObjectName(_fromUtf8("cmdRefreshTimeSheet"))
+        self.horizontalLayout_4.addWidget(self.cmdRefreshTimeSheet)
         self.gridLayout.addWidget(self.widget_2, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tabTime, _fromUtf8("Приход / уход"))
         self.gridLayout_3.addWidget(self.tabWidget, 0, 0, 1, 1)
@@ -187,6 +193,9 @@ class Ui_frmMain(object):
         self.cmdCancelSearch.setShortcut(QtGui.QApplication.translate("frmMain", "Esc", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdComing.setText(QtGui.QApplication.translate("frmMain", "Приход", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdLeaving.setText(QtGui.QApplication.translate("frmMain", "Уход", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdRefreshTimeSheet.setToolTip(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdRefreshTimeSheet.setText(QtGui.QApplication.translate("frmMain", "Обновить", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdRefreshTimeSheet.setShortcut(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
 
 from timesheet_grid import timesheet_grid
 from task_list import tasks_count_label, tasks_status_label, task_list

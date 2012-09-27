@@ -103,6 +103,12 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QPushButton" name="cmdNew">
             <property name="toolTip">
@@ -202,16 +208,22 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>34</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>40</height>
+           <height>34</height>
           </size>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QLabel" name="label_2">
             <property name="text">
@@ -287,6 +299,9 @@
        <item row="1" column="0">
         <widget class="QWidget" name="widget_3" native="true">
          <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="margin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="timesheet_grid" name="tblWeek">
             <property name="editTriggers">
@@ -312,6 +327,12 @@
           </size>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QPushButton" name="cmdComing">
             <property name="minimumSize">
@@ -368,6 +389,22 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdRefreshTimeSheet">
+            <property name="toolTip">
+             <string>F5</string>
+            </property>
+            <property name="text">
+             <string>Обновить</string>
+            </property>
+            <property name="shortcut">
+             <string>F5</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

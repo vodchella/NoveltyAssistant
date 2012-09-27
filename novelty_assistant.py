@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import datetime
+
 from PyQt4 import QtGui
 from PyQt4.QtGui import QSystemTrayIcon
 from gui.Ui_main_form import *
@@ -61,7 +63,8 @@ class main_form(QtGui.QDialog):
     def tabChanged(self, index):
         ob_name = self.ui.tabWidget.widget(index).objectName()
         if ob_name == 'tabTime':
-            self.ui.tblWeek.updateForCurrentWeek()
+            if (self.ui.tblWeek.today is None) or (self.ui.tblWeek.today != datetime.date.today()):
+                self.ui.tblWeek.updateForCurrentWeek()
     
     @QtCore.pyqtSlot()
     def startSearching(self):
@@ -273,6 +276,7 @@ def main():
             app.main_form.ui.tblWeek.staff_id = staff_id
             QtCore.QObject.connect( app.main_form.ui.cmdComing,  QtCore.SIGNAL('clicked()'), app.main_form.setNewComingTime )
             QtCore.QObject.connect( app.main_form.ui.cmdLeaving, QtCore.SIGNAL('clicked()'), app.main_form.setNewLeavingTime )
+            QtCore.QObject.connect( app.main_form.ui.cmdRefreshTimeSheet, QtCore.SIGNAL('clicked()'), app.main_form.ui.tblWeek.updateForCurrentWeek )
             
             #
             # Other
