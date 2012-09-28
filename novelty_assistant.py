@@ -43,7 +43,7 @@ class main_form(QtGui.QDialog):
         if date_time_str is not None:
             try:
                 QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-                setComingTimeXML(self.tl.staff_id, date_time_str)
+                set_coming_time(self.tl.staff_id, date_time_str)
             finally:
                 self.ui.tblWeek.updateForCurrentWeek()
                 QApplication.restoreOverrideCursor()
@@ -54,7 +54,7 @@ class main_form(QtGui.QDialog):
         if date_time_str is not None:
             try:
                 QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-                setLeavingTimeXML(self.tl.staff_id, date_time_str)
+                set_leaving_time(self.tl.staff_id, date_time_str)
             finally:
                 self.ui.tblWeek.updateForCurrentWeek()
                 QApplication.restoreOverrideCursor()
@@ -183,10 +183,10 @@ class tray_application(QtGui.QApplication):
     def checkUpdates(self, msgbox_if_false=True):
         try:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-            last_version_number = getProgramVersion()
+            last_version_number = get_program_version()
             QApplication.restoreOverrideCursor()
             if last_version_number > PROGRAM_REVISION_NUMBER:
-                new_in_version = getNewInVersion()
+                new_in_version = get_new_in_version()
                 if new_in_version is not None:
                     new_in_version = u"<br><br>Новое в версии:<br>%s" % new_in_version
                 else:
@@ -237,7 +237,7 @@ def main():
         try:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
-            staff_id = getStaffByUser(user_id)
+            staff_id = get_staff_by_user(user_id)
             fillCache()
             
             app.main_form = main_form()

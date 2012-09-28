@@ -10,7 +10,7 @@ from cache import *
 def loginAndSaveData(user_name, user_pass, check_state):
     user_id = 0
     try:
-        user_id = remoteLogin(user_name, user_pass)
+        user_id = remote_login(user_name, user_pass)
     except:
         pass
     if (user_id != 0) and (check_state == Qt.Checked):

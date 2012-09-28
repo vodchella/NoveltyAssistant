@@ -180,7 +180,7 @@ class task_list(QtGui.QScrollArea):
             self.addGroup(gr, -1)
             gr.hide()
             
-            xml_str = getWorksheetsXML(self.staff_id, date)
+            xml_str = get_worksheets(self.staff_id, date)
 #            xml_str = """<WORKSHEETS><WORKSHEET><WORKSHEET_ID>3020</WORKSHEET_ID><CUSTOMER_ID>28</CUSTOMER_ID><CUSTOMER_NAME>NOVELTY</CUSTOMER_NAME><TASK_TYPE_ID>2</TASK_TYPE_ID><TASK_TYPE_NAME>Разработка (программирование)</TASK_TYPE_NAME><DESCRIPTION>Интеграция с home.novelty. Добавлены методы GetWorksheets() и SetWorksheets() для управления отчётами о проделанной работе</DESCRIPTION><DURATION>215</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:32:46</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3021</WORKSHEET_ID><CUSTOMER_ID>28</CUSTOMER_ID><CUSTOMER_NAME>NOVELTY</CUSTOMER_NAME><TASK_TYPE_ID>2</TASK_TYPE_ID><TASK_TYPE_NAME>Разработка (программирование)</TASK_TYPE_NAME><DESCRIPTION>Оптимизирован механизм аутентификации в пакете novelty_home_integration</DESCRIPTION><DURATION>80</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:33:36</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3022</WORKSHEET_ID><CUSTOMER_ID>7</CUSTOMER_ID><CUSTOMER_NAME>ЦЕСНА ГАРАНТ СК</CUSTOMER_NAME><TASK_TYPE_ID>2</TASK_TYPE_ID><TASK_TYPE_NAME>Разработка (программирование)</TASK_TYPE_NAME><DESCRIPTION>2012062613000331</DESCRIPTION><DURATION>40</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:34:08</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3023</WORKSHEET_ID><CUSTOMER_ID>5</CUSTOMER_ID><CUSTOMER_NAME>НОМАД ИНШУРАНС</CUSTOMER_NAME><TASK_TYPE_ID>2</TASK_TYPE_ID><TASK_TYPE_NAME>Разработка (программирование)</TASK_TYPE_NAME><DESCRIPTION>2012061813000187</DESCRIPTION><DURATION>15</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:35:39</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3024</WORKSHEET_ID><CUSTOMER_ID>2</CUSTOMER_ID><CUSTOMER_NAME>АСБ</CUSTOMER_NAME><TASK_TYPE_ID>10</TASK_TYPE_ID><TASK_TYPE_NAME>Решение инцидента (Служба поддержки)</TASK_TYPE_NAME><DESCRIPTION>2012062613000313</DESCRIPTION><DURATION>10</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:36:09</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3025</WORKSHEET_ID><CUSTOMER_ID>2</CUSTOMER_ID><CUSTOMER_NAME>АСБ</CUSTOMER_NAME><TASK_TYPE_ID>10</TASK_TYPE_ID><TASK_TYPE_NAME>Решение инцидента (Служба поддержки)</TASK_TYPE_NAME><DESCRIPTION>2012062613000322</DESCRIPTION><DURATION>10</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:36:45</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3026</WORKSHEET_ID><CUSTOMER_ID>7</CUSTOMER_ID><CUSTOMER_NAME>ЦЕСНА ГАРАНТ СК</CUSTOMER_NAME><TASK_TYPE_ID>2</TASK_TYPE_ID><TASK_TYPE_NAME>Разработка (программирование)</TASK_TYPE_NAME><DESCRIPTION>2012062613000341</DESCRIPTION><DURATION>20</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:38:09</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3027</WORKSHEET_ID><CUSTOMER_ID>31</CUSTOMER_ID><CUSTOMER_NAME>KOMPETENZ</CUSTOMER_NAME><TASK_TYPE_ID>2</TASK_TYPE_ID><TASK_TYPE_NAME>Разработка (программирование)</TASK_TYPE_NAME><DESCRIPTION>2012062713000188</DESCRIPTION><DURATION>5</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:39:52</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3028</WORKSHEET_ID><CUSTOMER_ID>9</CUSTOMER_ID><CUSTOMER_NAME>АЛЬЯНС ПОЛИС СК</CUSTOMER_NAME><TASK_TYPE_ID>2</TASK_TYPE_ID><TASK_TYPE_NAME>Разработка (программирование)</TASK_TYPE_NAME><DESCRIPTION>2012062713000295</DESCRIPTION><DURATION>10</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:40:16</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3029</WORKSHEET_ID><CUSTOMER_ID>8</CUSTOMER_ID><CUSTOMER_NAME>АСКО СК</CUSTOMER_NAME><TASK_TYPE_ID>2</TASK_TYPE_ID><TASK_TYPE_NAME>Разработка (программирование)</TASK_TYPE_NAME><DESCRIPTION>2012062713000124</DESCRIPTION><DURATION>10</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:40:40</INPUT_DATE></WORKSHEET><WORKSHEET><WORKSHEET_ID>3030</WORKSHEET_ID><CUSTOMER_ID>8</CUSTOMER_ID><CUSTOMER_NAME>АСКО СК</CUSTOMER_NAME><TASK_TYPE_ID>14</TASK_TYPE_ID><TASK_TYPE_NAME>Перенос функционала (обновление)</TASK_TYPE_NAME><DESCRIPTION>2012062713000124 Перенос на боевую</DESCRIPTION><DURATION>10</DURATION><STAFF_ID>18</STAFF_ID><STAFF_NAME>Павлов Максим Андреевич</STAFF_NAME><INPUT_DATE>27.06.2012 19:41:03</INPUT_DATE></WORKSHEET></WORKSHEETS>"""
             dom = parseString(xml_str)
             worksheets = dom.getElementsByTagName('WORKSHEET')
@@ -302,25 +302,18 @@ class task_item(QtGui.QFrame):
         new_task_type_id = self.cboTaskType.itemData(self.cboTaskType.currentIndex()).toInt()[0]
         new_time = self.txtTime.value()
         
-        xml_str = \
-        """<WORKSHEETS>
-                <WORKSHEET>
-                    <WORKSHEET_ID>%i</WORKSHEET_ID>
-                    <CUSTOMER_ID>%i</CUSTOMER_ID>
-                    <TASK_TYPE_ID>%i</TASK_TYPE_ID>
-                    <DESCRIPTION>%s</DESCRIPTION>
-                    <DURATION>%i</DURATION>
-                    <STAFF_ID>%i</STAFF_ID>
-                </WORKSHEET>
-            </WORKSHEETS>""" % (self.worksheet_id,
-                                new_group_id,
-                                new_task_type_id,
-                                prepareString(new_desc_utf8),
-                                new_time,
-                                self.parent_task_list.staff_id)
+        xml_str = dict_to_xml(dict(WORKSHEETS = dict(WORKSHEET = dict(
+            WORKSHEET_ID = self.worksheet_id,
+            CUSTOMER_ID = new_group_id,
+            TASK_TYPE_ID = new_task_type_id,
+            DESCRIPTION = prepare_string(new_desc_utf8),
+            DURATION = new_time,
+            STAFF_ID = self.parent_task_list.staff_id
+            ))))
+
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
-            result_xml = setWorksheetXML(xml_str)
+            result_xml = set_worksheet(xml_str)
             if result_xml.find('<ACTION>INSERTED</ACTION>') != -1:
                 self.worksheet_id = int(get_xml_field_value(result_xml, 'WORKSHEET_ID'))
         finally:

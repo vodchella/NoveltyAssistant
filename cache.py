@@ -46,7 +46,7 @@ def fillCache():
     if cur.fetchall()[0][0] == 1:
         cur.execute("select count(*) from customers")
         if cur.fetchall()[0][0] == 0:
-            xml_str = getCustomersXML()
+            xml_str = get_customers()
             dom = parseString(xml_str)
             customers = dom.getElementsByTagName('CUSTOMER')
             for customer in customers:
@@ -54,7 +54,7 @@ def fillCache():
                 customer_name = get_node_element_value(customer, 'CUSTOMER_NAME')
                 cur.execute('insert into customers (novelty_id, customer_name) values (?, ?)', (customer_id, customer_name))
             
-            xml_str = getTaskTypesXML()
+            xml_str = get_task_types()
             dom = parseString(xml_str)
             task_types = dom.getElementsByTagName('TASK_TYPE')
             for task_type in task_types:

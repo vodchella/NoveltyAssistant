@@ -9,6 +9,16 @@ from errors import GuiException
 HOST = 'home2.novelty.kz:28110'
 URL = '/WebBridge/WebBridge'
 
+xml_template = \
+"""<?xml version = "1.0" encoding = "UTF8" ?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+     <ns2:%(function)s xmlns:ns2="http://ws.novelty.kz/">
+       %(param_list)s
+     </ns2:%(function)s>
+   </S:Body>
+</S:Envelope>"""
+
 session_id = ''
 user_name = ''
 user_pass = ''
@@ -18,7 +28,7 @@ def request(xml, SOAPAction):
     global session_id
 
     h = httplib.HTTPSConnection(HOST)
-    headers={
+    headers = {
         'Host':HOST,
         'Content-Type':'text/xml; charset=utf-8',
         'Content-Length':len(xml),
@@ -44,28 +54,21 @@ def request(xml, SOAPAction):
 
     return d
 
+def remote_call(function, params):
+    xml = xml_template % {'function':function, 'param_list':dict_to_xml(params)}
+    return request(xml, function)
+
 def authenticate():
     global session_id, user_id
 
     if len(session_id) == 0:
-        xml = \
-        """<?xml version = "1.0" encoding = "UTF8" ?>
-        <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-           <S:Body>
-             <ns2:authenticateUser xmlns:ns2="http://ws.novelty.kz/">
-               <aName>%s</aName>
-               <aPassword>%s</aPassword>
-               <aAlias>home</aAlias>
-             </ns2:authenticateUser>
-           </S:Body>
-        </S:Envelope>""" % (user_name, user_pass)
-        result_xml = request(xml, "authenticateUser")
-
+        param = dict(aName = user_name, aPassword = user_pass, aAlias = 'home')
+        result_xml = remote_call('authenticateUser', param)
         session_id = get_xml_field_value(result_xml, 'sessionID')
         if session_id is not None:
             user_id = get_xml_field_value(result_xml, 'ID')
         else:
-            raise GuiException("Формат данных не распознан")
+            raise GuiException("Не удалось получить идентификатор сессии после авторизации")
 
     return session_id
 
@@ -74,26 +77,14 @@ def get_data_xml(request_type, xml):
         encoded_xml = base64.b64encode(xml)
     except:
         raise GuiException('Невозможно перекодировать запрос в base64')
-    request_xml = \
-    """<?xml version = "1.0" encoding = "UTF-8" ?>
-    <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-        <S:Body>
-          <ns2:getDataXml xmlns:ns2="http://ws.novelty.kz/">
-            <aSessionID>%s</aSessionID>
-            <aRequest>
-              <Type>%s</Type>
-              <Version>1</Version>
-              <Body>%s</Body>
-            </aRequest>
-          </ns2:getDataXml>
-        </S:Body>
-    </S:Envelope>""" % (authenticate(), request_type, encoded_xml)
-
-    result_xml = request(request_xml, "getDataXml")
-
+    param = dict(
+        aSessionID = authenticate(),
+        aRequest = dict(Type = request_type, Version = 1, Body = encoded_xml)
+        )
+    result_xml = remote_call('getDataXml', param)
     encoded_body_xml = get_xml_field_value(result_xml, 'Body')
     if encoded_body_xml is None:
-        raise GuiException("Формат данных не распознан")
+        raise GuiException("Неизвестный тип ответа от веб-сервиса")
 
     return base64.b64decode(encoded_body_xml)
 

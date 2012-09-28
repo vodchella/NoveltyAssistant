@@ -24,5 +24,15 @@ def get_node_element_value(node, elem_name):
     except:
         pass
 
-def prepareString(str):
+def prepare_string(str):
     return str.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+def dict_to_xml(dictionary):
+    result = ''
+    for rec in dictionary.items():
+        if type(rec[1]) == dict:
+            value = dict_to_xml(rec[1])
+        else:
+            value = rec[1]
+        result += '<%(name)s>%(value)s</%(name)s>' % {'name':rec[0], 'value':value}
+    return result
