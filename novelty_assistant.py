@@ -117,16 +117,14 @@ class main_form(QtGui.QDialog):
         
         txt_u = unicode(text).upper().strip()
         if txt_u:
-            for gr in self.tl.groups:
-                if gr.group_id != -1:
-                    widget = highlightLabelIfNeed(gr.label)
+            for gr in filter(lambda g: g.group_id != -1, self.tl.groups):
+                widget = highlightLabelIfNeed(gr.label)
+                if first_widget is None: first_widget = widget
+                for item in filter(lambda i: i.group_id == gr.group_id, self.tl.items):
+                    widget = highlightLabelIfNeed(item.lblDesc)
                     if first_widget is None: first_widget = widget
-                    for item in self.tl.items:
-                        if item.group_id == gr.group_id:
-                            widget = highlightLabelIfNeed(item.lblDesc)
-                            if first_widget is None: first_widget = widget
-                            widget = highlightLabelIfNeed(item.lblTime)
-                            if first_widget is None: first_widget = widget
+                    widget = highlightLabelIfNeed(item.lblTime)
+                    if first_widget is None: first_widget = widget
             if first_widget is not None:
                 self.tl.ensureWidgetVisible(first_widget)
                 self.ui.txtSearchText.setPalette(self.createDefaultPalette())
