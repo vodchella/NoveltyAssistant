@@ -5,7 +5,7 @@ def get_xml_field_value(xml, field):
     pos = xml.find(beg_str)
     if pos != -1:
         result = xml[pos + len(beg_str) : xml.find('</%s>' % field)]
-        if len(result) > 0:
+        if result:
             return result
 
 def replace_field_in_xml(xml, field, value):
@@ -29,10 +29,8 @@ def prepare_string(str):
 
 def dict_to_xml(dictionary):
     result = ''
-    for rec in dictionary.items():
-        if type(rec[1]) == dict:
-            value = dict_to_xml(rec[1])
-        else:
-            value = rec[1]
-        result += '<%(name)s>%(value)s</%(name)s>' % {'name':rec[0], 'value':value}
+    for name, value in dictionary.items():
+        if type(value) == dict:
+            value = dict_to_xml(value)
+        result += '<%(name)s>%(value)s</%(name)s>' % {'name':name, 'value':value}
     return result

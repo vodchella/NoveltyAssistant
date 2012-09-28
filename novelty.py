@@ -46,7 +46,7 @@ def request(xml, SOAPAction):
         err = get_xml_field_value(d, 'ErrorMessage')
 
     if err is not None:
-        if err.find('java.lang.Exception: Сессия не определена') != -1:
+        if 'java.lang.Exception: Сессия не определена' in err:
             session_id = ''
             return request(replace_field_in_xml(xml, 'aSessionID', authenticate()), SOAPAction)
         else:
@@ -61,7 +61,7 @@ def remote_call(function, params):
 def authenticate():
     global session_id, user_id
 
-    if len(session_id) == 0:
+    if not session_id:
         param = dict(aName = user_name, aPassword = user_pass, aAlias = 'home')
         result_xml = remote_call('authenticateUser', param)
         session_id = get_xml_field_value(result_xml, 'sessionID')

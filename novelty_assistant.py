@@ -108,7 +108,7 @@ class main_form(QtGui.QDialog):
     def searchForText(self, text):
         def highlightLabelIfNeed(label):
             caption = unicode(label.text())
-            if caption.upper().find(txt_u) != -1:
+            if txt_u in caption.upper():
                 label.highlightText(text)
                 return label
         
@@ -116,7 +116,7 @@ class main_form(QtGui.QDialog):
         first_widget = None
         
         txt_u = unicode(text).upper().strip()
-        if len(txt_u) != 0:
+        if txt_u:
             for gr in self.tl.groups:
                 if gr.group_id != -1:
                     widget = highlightLabelIfNeed(gr.label)

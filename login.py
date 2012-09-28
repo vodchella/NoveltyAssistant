@@ -35,7 +35,7 @@ def tryLogin():
         frmLogin = QtGui.QDialog()
         ui = Ui_frmLogin()
         ui.setupUi(frmLogin)
-        if len(user_name) != 0:
+        if user_name:
             ui.txtLogin.setText(user_name)
             ui.txtPass.setFocus()
             

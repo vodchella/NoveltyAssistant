@@ -314,7 +314,7 @@ class task_item(QtGui.QFrame):
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
             result_xml = set_worksheet(xml_str)
-            if result_xml.find('<ACTION>INSERTED</ACTION>') != -1:
+            if '<ACTION>INSERTED</ACTION>' in result_xml:
                 self.worksheet_id = int(get_xml_field_value(result_xml, 'WORKSHEET_ID'))
         finally:
             QApplication.restoreOverrideCursor()
