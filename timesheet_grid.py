@@ -32,7 +32,7 @@ class timesheet_grid(QtGui.QTableWidget):
         self.setColumnCount(4)
         self.setHorizontalHeaderLabels(column_captions)
         red_brush = QBrush(QColor('red'))
-        for i in range(0, 7):
+        for i in xrange(7):
             self.insertRow(i)
             
             # Дата
@@ -45,7 +45,7 @@ class timesheet_grid(QtGui.QTableWidget):
             self.setCellColors(i, cell)
             self.setItem(i, 1, cell)
             
-            for j in range(2, 4):                
+            for j in xrange(2, 4):                
                 cell = QTableWidgetItem('-')
                 if i > 4: cell.setForeground(red_brush)
                 self.setItem(i, j, cell)
@@ -56,7 +56,7 @@ class timesheet_grid(QtGui.QTableWidget):
         self.week_dates = []
         today = datetime.date.today()
         monday = today - datetime.timedelta(days=today.weekday())
-        for i in range(0, 7):
+        for i in xrange(7):
             self.week_dates.append(monday + datetime.timedelta(days=i))
     
     def updateForCurrentWeek(self):
@@ -76,7 +76,7 @@ class timesheet_grid(QtGui.QTableWidget):
             xml_str = get_timesheet(self.staff_id, monday_str, sunday_str)
             dom = parseString(xml_str)
             timesheets = dom.getElementsByTagName('TIMESHEET')
-            last_table_row = -1
+            last_table_row = 0
             for timesheet in timesheets:
                 beg_datetime = get_node_element_value(timesheet, 'BEG_DATE')
                 end_datetime = get_node_element_value(timesheet, 'END_DATE')
@@ -88,17 +88,15 @@ class timesheet_grid(QtGui.QTableWidget):
                     cur_date = datetime.datetime.strptime(end_datetime[:10], REMOTE_DATE_FORMAT).date()
                 
                 if cur_date is not None:
-                    i = last_table_row
-                    for dt in self.week_dates[last_table_row + 1:]:
-                        i += 1
+                    for index, dt in enumerate(self.week_dates[last_table_row:], last_table_row):
                         if dt == cur_date:
                             if beg_datetime is not None:
-                                cell_beg = self.item(i, 2)
+                                cell_beg = self.item(index, 2)
                                 cell_beg.setText(beg_datetime[11:])
                             if end_datetime is not None:
-                                cell_end = self.item(i, 3)
+                                cell_end = self.item(index, 3)
                                 cell_end.setText(end_datetime[11:])
-                            last_table_row = i
+                            last_table_row = index + 1
                             break
         finally:
             QApplication.restoreOverrideCursor()
