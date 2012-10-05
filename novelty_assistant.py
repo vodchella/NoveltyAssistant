@@ -227,16 +227,28 @@ def main():
     initCache()
 
     user_id = tryLogin()
-    if user_id == 0:
+    if user_id == 0 and not DONT_EXIT_IF_CANT_CONNECT:
         sys.exit(0)
     else:
-        app.checkUpdates(False)
+        #
+        # Условия "get_last_error() != ERROR_CANT_CONNECT" никогда не будут выполняться
+        # без установленного флага DONT_EXIT_IF_CANT_CONNECT, т.к. без этого флага,
+        # в случае невозможности соединиться с базой, выполнение просто не дойдет до сюда.
+        #
+        # Флаг DONT_EXIT_IF_CANT_CONNECT предназначен только для отладочных целей и никогда
+        # не должен использоваться в production-версиях.
+        #
+        if get_last_error() != ERROR_CANT_CONNECT:
+            app.checkUpdates(False)
         
         try:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
-            staff_id = get_staff_by_user(user_id)
-            fillCache()
+            if get_last_error() != ERROR_CANT_CONNECT:
+                staff_id = get_staff_by_user(user_id)
+                fillCache()
+            else:
+                staff_id = None
             
             app.main_form = main_form()
             app.main_form.ui = Ui_frmMain()
@@ -245,41 +257,46 @@ def main():
             app.main_form.setWindowTitle(PROGRAM_NAME_FULL)
             app.main_form.show()
             
-            #
-            # Tasks
-            #
-            app.main_form.tl = app.main_form.ui.tl
-            app.main_form.tl.main_form = app.main_form
-            app.main_form.tl.staff_id = staff_id
-            
-            app.main_form.ui.statusLabel.task_list = app.main_form.tl
-            app.main_form.ui.countLabel.task_list  = app.main_form.tl
+            if staff_id is not None:
+                #
+                # Tasks
+                #
+                app.main_form.tl = app.main_form.ui.tl
+                app.main_form.tl.main_form = app.main_form
+                app.main_form.tl.staff_id = staff_id
+                
+                app.main_form.ui.statusLabel.task_list = app.main_form.tl
+                app.main_form.ui.countLabel.task_list  = app.main_form.tl
 
-            QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalCountChanged()'), app.main_form.ui.countLabel.updateCount )
-            QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.ui.statusLabel.updateStatus )
-            QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('startEditItem()'), app.main_form.stopSearching )
-            QtCore.QObject.connect( app.main_form.ui.cmdNew, QtCore.SIGNAL('clicked()'), app.main_form.addTask )
-            QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.refreshTaskList )
-            QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.stopSearching )
-            QtCore.QObject.connect( app.main_form.ui.cmdSearch, QtCore.SIGNAL('clicked()'), app.main_form.startSearching )
-            QtCore.QObject.connect( app.main_form.ui.cmdCancelSearch, QtCore.SIGNAL('clicked()'), app.main_form.stopSearching )
-            QtCore.QObject.connect( app.main_form.ui.txtSearchText, QtCore.SIGNAL('textChanged(QString)'), app.main_form.searchForText )
-            QtCore.QObject.connect( app.main_form.ui.dt, QtCore.SIGNAL('dateChanged(QDate)'), app.main_form.tl.updateOnDate )
-            QtCore.QObject.connect( app.main_form.ui.dt, QtCore.SIGNAL('dateChanged(QDate)'), app.main_form.stopSearching )
-            app.main_form.ui.dt.setDate(QtCore.QDate.currentDate())
-            
-            #
-            # Time
-            #
-            app.main_form.ui.tblWeek.staff_id = staff_id
-            QtCore.QObject.connect( app.main_form.ui.cmdComing,  QtCore.SIGNAL('clicked()'), app.main_form.setNewComingTime )
-            QtCore.QObject.connect( app.main_form.ui.cmdLeaving, QtCore.SIGNAL('clicked()'), app.main_form.setNewLeavingTime )
-            QtCore.QObject.connect( app.main_form.ui.cmdRefreshTimeSheet, QtCore.SIGNAL('clicked()'), app.main_form.ui.tblWeek.updateForCurrentWeek )
-            
-            #
-            # Other
-            #
-            QtCore.QObject.connect( app.main_form.ui.tabWidget, QtCore.SIGNAL('currentChanged(int)'), app.main_form.tabChanged )
+                QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalCountChanged()'), app.main_form.ui.countLabel.updateCount )
+                QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('totalTimeChanged()'), app.main_form.ui.statusLabel.updateStatus )
+                QtCore.QObject.connect( app.main_form.tl, QtCore.SIGNAL('startEditItem()'), app.main_form.stopSearching )
+                QtCore.QObject.connect( app.main_form.ui.cmdNew, QtCore.SIGNAL('clicked()'), app.main_form.addTask )
+                QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.refreshTaskList )
+                QtCore.QObject.connect( app.main_form.ui.cmdRefresh, QtCore.SIGNAL('clicked()'), app.main_form.stopSearching )
+                QtCore.QObject.connect( app.main_form.ui.cmdSearch, QtCore.SIGNAL('clicked()'), app.main_form.startSearching )
+                QtCore.QObject.connect( app.main_form.ui.cmdCancelSearch, QtCore.SIGNAL('clicked()'), app.main_form.stopSearching )
+                QtCore.QObject.connect( app.main_form.ui.txtSearchText, QtCore.SIGNAL('textChanged(QString)'), app.main_form.searchForText )
+                QtCore.QObject.connect( app.main_form.ui.dt, QtCore.SIGNAL('dateChanged(QDate)'), app.main_form.tl.updateOnDate )
+                QtCore.QObject.connect( app.main_form.ui.dt, QtCore.SIGNAL('dateChanged(QDate)'), app.main_form.stopSearching )
+                app.main_form.ui.dt.setDate(QtCore.QDate.currentDate())
+                
+                #
+                # Time
+                #
+                app.main_form.ui.tblWeek.staff_id = staff_id
+                QtCore.QObject.connect( app.main_form.ui.cmdComing,  QtCore.SIGNAL('clicked()'), app.main_form.setNewComingTime )
+                QtCore.QObject.connect( app.main_form.ui.cmdLeaving, QtCore.SIGNAL('clicked()'), app.main_form.setNewLeavingTime )
+                QtCore.QObject.connect( app.main_form.ui.cmdRefreshTimeSheet, QtCore.SIGNAL('clicked()'), app.main_form.ui.tblWeek.updateForCurrentWeek )
+                
+                #
+                # Other
+                #
+                QtCore.QObject.connect( app.main_form.ui.tabWidget, QtCore.SIGNAL('currentChanged(int)'), app.main_form.tabChanged )
+            else:
+                ui = app.main_form.ui
+                ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTasks))
+                ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTime))
         finally:
             QApplication.restoreOverrideCursor()
         

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
+# Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
 #
-# Created: Thu Sep 27 12:48:10 2012
-#      by: PyQt4 UI code generator 4.9.4
+# Created: Sat Oct  6 00:39:51 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -168,6 +168,9 @@ class Ui_frmMain(object):
         self.horizontalLayout_4.addWidget(self.cmdRefreshTimeSheet)
         self.gridLayout.addWidget(self.widget_2, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tabTime, _fromUtf8("Приход / уход"))
+        self.tabAppServers = QtGui.QWidget()
+        self.tabAppServers.setObjectName(_fromUtf8("tabAppServers"))
+        self.tabWidget.addTab(self.tabAppServers, _fromUtf8(""))
         self.gridLayout_3.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(frmMain)
@@ -196,6 +199,7 @@ class Ui_frmMain(object):
         self.cmdRefreshTimeSheet.setToolTip(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefreshTimeSheet.setText(QtGui.QApplication.translate("frmMain", "Обновить", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefreshTimeSheet.setShortcut(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabAppServers), QtGui.QApplication.translate("frmMain", "Серверы приложений", None, QtGui.QApplication.UnicodeUTF8))
 
 from timesheet_grid import timesheet_grid
 from task_list import tasks_count_label, tasks_status_label, task_list

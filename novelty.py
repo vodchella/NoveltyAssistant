@@ -4,7 +4,7 @@ import httplib
 import base64
 
 from xml_utils import *
-from errors import GuiException
+from errors import *
 
 HOST = 'home2.novelty.kz:28110'
 URL = '/WebBridge/WebBridge'
@@ -37,6 +37,7 @@ def request(xml, SOAPAction):
     try:
         h.request ('POST', URL, body=xml, headers=headers)
     except:
+        set_last_error(ERROR_CANT_CONNECT)
         raise GuiException('Невозможно установить соединение с БД')
     r = h.getresponse()
     d = r.read()

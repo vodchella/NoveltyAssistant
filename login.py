@@ -6,6 +6,7 @@ from PyQt4.Qt import *
 from gui.Ui_login_form import *
 from remote_functions import *
 from cache import *
+from errors import *
 
 def loginAndSaveData(user_name, user_pass, check_state):
     user_id = 0
@@ -22,6 +23,8 @@ def tryLogin():
     user_id = 0
     user_name = ''
     
+    set_last_error(NO_ERROR)
+    
     saved_login_data = getSavedLoginData()
     if saved_login_data is not None:
         user_name = saved_login_data[0]
@@ -31,7 +34,7 @@ def tryLogin():
     else:
         bShowDialog = True
     
-    if bShowDialog:
+    if bShowDialog and get_last_error() != ERROR_CANT_CONNECT:
         frmLogin = QtGui.QDialog()
         ui = Ui_frmLogin()
         ui.setupUi(frmLogin)

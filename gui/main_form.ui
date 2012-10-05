@@ -411,6 +411,11 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabAppServers">
+      <attribute name="title">
+       <string>Серверы приложений</string>
+      </attribute>
+     </widget>
     </widget>
    </item>
   </layout>
