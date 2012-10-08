@@ -2,9 +2,9 @@
 
 import os
 import sqlite3
-from xml.dom.minidom import parseString
-from xml_utils import *
-from remote_functions import *
+from xml.dom.minidom    import parseString
+from xml_utils          import get_node_element_value
+from remote_functions   import get_customers, get_task_types
 
 datadir = os.path.expanduser("~") + '/.novelty_assistant'
 dbfile = datadir + '/cache.db'

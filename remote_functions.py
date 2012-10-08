@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from novelty import *
-from xml_utils import *
-from errors import GuiException
+from novelty    import login, get_data_xml
+from xml_utils  import get_xml_field_value, dict_to_xml
+from errors     import GuiException
 
 def remote_login(u_name, u_pwd):
     return login(u_name, u_pwd)

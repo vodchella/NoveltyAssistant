@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QApplication
+from qt_common import *
 from constants import *
 
 last_error_code = ERROR_SUCCESS
@@ -16,5 +15,5 @@ def get_last_error():
 class GuiException(Exception):
     def __init__(self, value):
         QApplication.restoreOverrideCursor()
-        QtGui.QMessageBox.critical( None, u'Ошибка', QtCore.QString.fromUtf8(value), QtGui.QMessageBox.Ok )
+        QMessageBox.critical( None, u'Ошибка', QString.fromUtf8(value), QMessageBox.Ok )
         super(GuiException, self).__init__(value)

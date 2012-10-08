@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QApplication, QCursor
-
-from xml.dom.minidom import parseString
-from xml_utils import *
-from str_utils import *
-from remote_functions import *
-from errors import GuiException
-from cache import *
+from qt_common          import *
+from xml.dom.minidom    import parseString
+from xml_utils          import get_node_element_value, dict_to_xml, prepare_string
+from str_utils          import ireplace_ex
+from remote_functions   import get_worksheets, set_worksheet
+from errors             import GuiException
+from cache              import getTaskTypes, getCustomers
 
 def getTimeText(minutes):
     m = int(minutes)
@@ -23,7 +20,7 @@ def getTimeText(minutes):
         else:
             return u'%s ч. %s мин.' % (hours, minutes_remainder)
 
-class task_list(QtGui.QScrollArea):
+class task_list(QScrollArea):
     main_form = None
     groups  = []
     items   = []
@@ -32,21 +29,21 @@ class task_list(QtGui.QScrollArea):
     
     def __init__(self,  parent):
         super(task_list, self).__init__(parent)
-        self.startEditItem = QtCore.pyqtSignal()
-        self.stopEditAllItems = QtCore.pyqtSignal()
-        self.totalTimeChanged = QtCore.pyqtSignal()
-        self.totalCountChanged = QtCore.pyqtSignal()
+        self.startEditItem = pyqtSignal()
+        self.stopEditAllItems = pyqtSignal()
+        self.totalTimeChanged = pyqtSignal()
+        self.totalCountChanged = pyqtSignal()
 
-        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setWidgetResizable(True)
-        self.main_container = QtGui.QWidget()
+        self.main_container = QWidget()
         self.setWidget(self.main_container)
-        self.vl = QtGui.QVBoxLayout(self.main_container)
+        self.vl = QVBoxLayout(self.main_container)
         
-        self.container = QtGui.QWidget(self.main_container)
+        self.container = QWidget(self.main_container)
         self.vl.addWidget(self.container)
-        self.vl2 = QtGui.QVBoxLayout(self.container)
-        self.spacer = QtGui.QSpacerItem(0, 0, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.vl2 = QVBoxLayout(self.container)
+        self.spacer = QSpacerItem(0, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.vl.addItem(self.spacer)
 
         self.show()
@@ -59,7 +56,7 @@ class task_list(QtGui.QScrollArea):
             self.vl2.addWidget(group)
             self.groups.append(group)
             group.group_index = len(self.groups) - 1
-            QtCore.QObject.connect( self.main_form, QtCore.SIGNAL('clearAllSearchSelectionsInTaskList()'), group.label.clearHighlighting )
+            QObject.connect( self.main_form, SIGNAL('clearAllSearchSelectionsInTaskList()'), group.label.clearHighlighting )
     
     def removeGroup(self, group_id):
         i_group_id = int(group_id)
@@ -92,13 +89,13 @@ class task_list(QtGui.QScrollArea):
             item.group_id = i_group_id
             self.total_time += item.time_value
             if i_group_id != -1:
-                QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
-            QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
-            QtCore.QObject.connect( self, QtCore.SIGNAL('startEditItem()'), item.stopEdit )
-            QtCore.QObject.connect( self, QtCore.SIGNAL('stopEditAllItems()'), item.stopEdit )
-            QtCore.QObject.connect( item, QtCore.SIGNAL('beforeEditItem()'), self.beforeEditNewItem )
-            QtCore.QObject.connect( self.main_form, QtCore.SIGNAL('clearAllSearchSelectionsInTaskList()'), item.lblDesc.clearHighlighting )
-            QtCore.QObject.connect( self.main_form, QtCore.SIGNAL('clearAllSearchSelectionsInTaskList()'), item.lblTime.clearHighlighting )
+                QObject.emit( self, SIGNAL('totalCountChanged()') )
+            QObject.emit( self, SIGNAL('totalTimeChanged()') )
+            QObject.connect( self, SIGNAL('startEditItem()'), item.stopEdit )
+            QObject.connect( self, SIGNAL('stopEditAllItems()'), item.stopEdit )
+            QObject.connect( item, SIGNAL('beforeEditItem()'), self.beforeEditNewItem )
+            QObject.connect( self.main_form, SIGNAL('clearAllSearchSelectionsInTaskList()'), item.lblDesc.clearHighlighting )
+            QObject.connect( self.main_form, SIGNAL('clearAllSearchSelectionsInTaskList()'), item.lblTime.clearHighlighting )
         else:
             raise GuiException('Группа с id равным %i не существует' % i_group_id)
     
@@ -114,11 +111,11 @@ class task_list(QtGui.QScrollArea):
             items_count_in_group = self.getItemsCountInGroup(group_id)
         
         self.total_time -= item.time_value
-        QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
+        QObject.emit( self, SIGNAL('totalTimeChanged()') )
         
         item.setParent(None)
         del self.items[index], item
-        QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
+        QObject.emit( self, SIGNAL('totalCountChanged()') )
         self.updateItemsIndexes()
         
         if (items_count_in_group == 1) and (group_id != -1):
@@ -131,7 +128,7 @@ class task_list(QtGui.QScrollArea):
             item.parent = gr
             gr.vl.addWidget(item)
             if (item.group_id == -1) and (new_group_id != -1):
-                QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
+                QObject.emit( self, SIGNAL('totalCountChanged()') )
             item.group_id = new_group_id
     
     def updateItemsIndexes(self):
@@ -150,10 +147,10 @@ class task_list(QtGui.QScrollArea):
             group.setParent(None)
             del self.groups[i]
         self.total_time = 0
-        QtCore.QObject.emit( self, QtCore.SIGNAL('totalTimeChanged()') )
-        QtCore.QObject.emit( self, QtCore.SIGNAL('totalCountChanged()') )
+        QObject.emit( self, SIGNAL('totalTimeChanged()') )
+        QObject.emit( self, SIGNAL('totalCountChanged()') )
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def newItem(self):
         self.showNewItemGroup()
         ti = task_item(self)
@@ -161,7 +158,7 @@ class task_list(QtGui.QScrollArea):
         self.addItem(ti, -1)
         ti.beginEdit()
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def updateOnDate(self, date):
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
@@ -194,9 +191,9 @@ class task_list(QtGui.QScrollArea):
         finally:
             QApplication.restoreOverrideCursor()
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def beforeEditNewItem(self):
-        QtCore.QObject.emit( self, QtCore.SIGNAL('startEditItem()') )
+        QObject.emit( self, SIGNAL('startEditItem()') )
     
     def hideNewItemGroup(self):
         gr = self.getGroupById(-1)
@@ -209,19 +206,19 @@ class task_list(QtGui.QScrollArea):
             gr.show()
 
 
-class task_group(QtGui.QFrame):
+class task_group(QFrame):
     group_id    = -1
     group_index = -1
     
     def __init__(self,  parent):
         super(task_group,  self).__init__(parent)
         
-        self.vl = QtGui.QVBoxLayout(self)
+        self.vl = QVBoxLayout(self)
         self.vl.setMargin(5)
         self.show()
         
         self.label = task_label(self)
-        font = QtGui.QFont()
+        font = QFont()
         font.setPointSize(14)
         font.setBold(True)
         font.setUnderline(True)
@@ -236,7 +233,7 @@ class task_group(QtGui.QFrame):
         return self.label.text()
 
 
-class task_item(QtGui.QFrame):
+class task_item(QFrame):
     parent_task_list = None
     item_index = -1
     group_id = -1
@@ -246,39 +243,39 @@ class task_item(QtGui.QFrame):
     
     def __init__(self,  parent):
         super(task_item,  self).__init__(parent)
-        self.beforeEditItem = QtCore.pyqtSignal()
+        self.beforeEditItem = pyqtSignal()
 
-        self.pages = QtGui.QStackedWidget(self)
-        self.vl = QtGui.QVBoxLayout(self)
+        self.pages = QStackedWidget(self)
+        self.vl = QVBoxLayout(self)
         self.vl.addWidget(self.pages)
         self.pages.show()
 
-        self.pgView = QtGui.QWidget()
+        self.pgView = QWidget()
         self.pages.addWidget(self.pgView)
-        self.vlView = QtGui.QVBoxLayout(self.pgView)
+        self.vlView = QVBoxLayout(self.pgView)
         self.vlView.setMargin(5)
         self.pgView.show()
 
         self.lblDesc = task_label(self.pgView)
-        QtCore.QObject.connect( self.lblDesc, QtCore.SIGNAL('clicked()'), self.beginEdit )
+        QObject.connect( self.lblDesc, SIGNAL('clicked()'), self.beginEdit )
         self.vlView.addWidget(self.lblDesc)
         
-        font = QtGui.QFont()
+        font = QFont()
         font.setBold(True)
         font.setWeight(75)
         self.lblDesc.setFont(font)
         
         self.lblTime = task_label(self.pgView)
-        QtCore.QObject.connect( self.lblTime, QtCore.SIGNAL('clicked()'), self.beginEdit )
+        QObject.connect( self.lblTime, SIGNAL('clicked()'), self.beginEdit )
         self.vlView.addWidget(self.lblTime)
         
-        self.frameBottomLine = QtGui.QFrame(self)
-        self.frameBottomLine.setFrameShape(QtGui.QFrame.HLine)
-        self.frameBottomLine.setFrameShadow(QtGui.QFrame.Raised)
+        self.frameBottomLine = QFrame(self)
+        self.frameBottomLine.setFrameShape(QFrame.HLine)
+        self.frameBottomLine.setFrameShadow(QFrame.Raised)
         self.frameBottomLine.show()
         self.vl.addWidget(self.frameBottomLine)
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def saveData(self):
         self.buttonBox.setFocus()
         self.cboCustomer.validateValue()
@@ -333,7 +330,7 @@ class task_item(QtGui.QFrame):
         
         self.stopEdit()
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def stopEdit(self):
         try:
             self.esc_shortcut.setEnabled(False)
@@ -349,13 +346,13 @@ class task_item(QtGui.QFrame):
         except:
             pass
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def beginEdit(self):
-        QtCore.QObject.emit( self, QtCore.SIGNAL('beforeEditItem()') )
+        QObject.emit( self, SIGNAL('beforeEditItem()') )
         
-        self.pgEdit = QtGui.QWidget()
+        self.pgEdit = QWidget()
         self.pages.addWidget(self.pgEdit)
-        self.vlEdit = QtGui.QVBoxLayout(self.pgEdit)
+        self.vlEdit = QVBoxLayout(self.pgEdit)
         self.vlEdit.setMargin(5)
         self.pgEdit.show()
         
@@ -381,48 +378,48 @@ class task_item(QtGui.QFrame):
         if self.group_id == -1:
             self.cboTaskType.setEditText('')
         
-        self.txt = QtGui.QPlainTextEdit(self.pgEdit)
-        self.txt.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.txt.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.txt.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.txt = QPlainTextEdit(self.pgEdit)
+        self.txt.setMaximumSize(QSize(16777215, 100))
+        self.txt.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.txt.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.txt.setTabChangesFocus(True)
         self.txt.setPlainText(self.lblDesc.text())
         self.vlEdit.addWidget(self.txt)
         
-        self.bottom_frame = QtGui.QFrame(self.pgEdit)
+        self.bottom_frame = QFrame(self.pgEdit)
         self.vlEdit.addWidget(self.bottom_frame)
         
-        self.bottom_frame_layout = QtGui.QHBoxLayout(self.bottom_frame)
-        self.txtTime = QtGui.QSpinBox(self.bottom_frame)
-        self.txtTime.setMinimumSize(QtCore.QSize(70, 0))
+        self.bottom_frame_layout = QHBoxLayout(self.bottom_frame)
+        self.txtTime = QSpinBox(self.bottom_frame)
+        self.txtTime.setMinimumSize(QSize(70, 0))
         self.txtTime.setMaximum(999999999)
         self.txtTime.setValue(self.time_value)
         self.bottom_frame_layout.addWidget(self.txtTime)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem1 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.bottom_frame_layout.addItem(spacerItem1)
-        self.buttonBox = QtGui.QDialogButtonBox(self.bottom_frame)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Save)
+        self.buttonBox = QDialogButtonBox(self.bottom_frame)
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Save)
         self.bottom_frame_layout.addWidget(self.buttonBox)
         
-        QtCore.QObject.connect( self.buttonBox, QtCore.SIGNAL('rejected()'), self.stopEdit )
-        QtCore.QObject.connect( self.buttonBox, QtCore.SIGNAL('accepted()'), self.saveData )
+        QObject.connect( self.buttonBox, SIGNAL('rejected()'), self.stopEdit )
+        QObject.connect( self.buttonBox, SIGNAL('accepted()'), self.saveData )
         
         self.pages.setCurrentIndex(1)
         self.txt.setFocus(Qt.OtherFocusReason)
         
-        self.esc_shortcut = QtGui.QShortcut(self)
+        self.esc_shortcut = QShortcut(self)
         self.esc_shortcut.setKey(Qt.Key_Escape)
-        QtCore.QObject.connect( self.esc_shortcut, QtCore.SIGNAL('activated()'), self.stopEdit )
+        QObject.connect( self.esc_shortcut, SIGNAL('activated()'), self.stopEdit )
         self.esc_shortcut.setEnabled(True)
         
-        self.save_shortcut = QtGui.QShortcut(self)
+        self.save_shortcut = QShortcut(self)
         self.save_shortcut.setKey('Ctrl+S')
-        QtCore.QObject.connect( self.save_shortcut, QtCore.SIGNAL('activated()'), self.saveData )
+        QObject.connect( self.save_shortcut, SIGNAL('activated()'), self.saveData )
         self.save_shortcut.setEnabled(True)
         
-        self.save_shortcut2 = QtGui.QShortcut(self)
+        self.save_shortcut2 = QShortcut(self)
         self.save_shortcut2.setKey(Qt.Key_Return)
-        QtCore.QObject.connect( self.save_shortcut2, QtCore.SIGNAL('activated()'), self.saveData )
+        QObject.connect( self.save_shortcut2, SIGNAL('activated()'), self.saveData )
         self.save_shortcut2.setEnabled(True)
         
         if self.group_id == -1:
@@ -438,7 +435,7 @@ class task_item(QtGui.QFrame):
         if self.parent_task_list is not None:
             self.parent_task_list.total_time -= old_time
             self.parent_task_list.total_time += new_time
-            QtCore.QObject.emit( self.parent_task_list, QtCore.SIGNAL('totalTimeChanged()') )
+            QObject.emit( self.parent_task_list, SIGNAL('totalTimeChanged()') )
     
     def setDesc(self, desc):
         self.lblDesc.setText(desc)
@@ -457,14 +454,14 @@ class task_item(QtGui.QFrame):
             self.frameBottomLine.hide()
 
 
-class task_label(QtGui.QLabel):
+class task_label(QLabel):
     plain_text = ''
     
     def __init__(self,  parent):
         super(task_label,  self).__init__(parent)
-        self.setTextFormat(QtCore.Qt.RichText)
+        self.setTextFormat(Qt.RichText)
         self.setWordWrap(True)
-        self.clicked = QtCore.pyqtSignal()
+        self.clicked = pyqtSignal()
     
     def formatHtml(self, html_text):
         return html_text.replace('\n', '<br>')
@@ -479,20 +476,20 @@ class task_label(QtGui.QLabel):
     def highlightText(self, str, backcolor='yellow'):
         super(task_label, self).setText(self.formatHtml(ireplace_ex(self.plain_text, str, u'<font style=background-color:%s>##OLD##</font>' % backcolor)))
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def clearHighlighting(self):
         super(task_label, self).setText(self.formatHtml(self.plain_text))
     
     def mouseReleaseEvent(self, event):
-        QtCore.QObject.emit( self, QtCore.SIGNAL('clicked()') )
+        QObject.emit( self, SIGNAL('clicked()') )
 
-class tasks_status_label(QtGui.QLabel):
+class tasks_status_label(QLabel):
     task_list = None
     
     def __init__(self,  parent):
         super(tasks_status_label,  self).__init__(parent)
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def updateStatus(self):
         if self.task_list is not None:
             if self.task_list.total_time != 0:
@@ -502,13 +499,13 @@ class tasks_status_label(QtGui.QLabel):
                 self.setText('')
                 self.hide()
 
-class tasks_count_label(QtGui.QLabel):
+class tasks_count_label(QLabel):
     task_list = None
     
     def __init__(self,  parent):
         super(tasks_count_label,  self).__init__(parent)
     
-    @QtCore.pyqtSlot()
+    @pyqtSlot()
     def updateCount(self):
         if self.task_list is not None:
             l = len(self.task_list.items)
@@ -519,7 +516,7 @@ class tasks_count_label(QtGui.QLabel):
                 self.setText('')
                 self.hide()
 
-class task_combo_box(QtGui.QComboBox):
+class task_combo_box(QComboBox):
     def __init__(self,  parent):
         super(task_combo_box,  self).__init__(parent)
     

@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-
-from PyQt4 import QtGui
-from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QApplication, QTableWidgetItem, QBrush, QColor, QCursor
-
-from xml.dom.minidom import parseString
-from xml_utils import *
-from remote_functions import *
-from constants import *
+from qt_common          import *
+from constants          import *
+from xml.dom.minidom    import parseString
+from xml_utils          import get_node_element_value
+from remote_functions   import get_timesheet
 
 week_days = [u'Понедельник', u'Вторник', u'Среда', u'Четверг', u'Пятница', u'Суббота', u'Воскресение']
 column_captions = [u'Дата', u'День недели', u'Приход', u'Уход']
 
-class timesheet_grid(QtGui.QTableWidget):
+class timesheet_grid(QTableWidget):
     bInitialized = False
     staff_id = 0
     week_dates = []

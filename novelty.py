@@ -3,8 +3,9 @@
 import httplib
 import base64
 
-from xml_utils import *
-from errors import *
+from constants  import *
+from xml_utils  import replace_field_in_xml, get_xml_field_value, dict_to_xml
+from errors     import GuiException, set_last_error
 
 HOST = 'home2.novelty.kz:28110'
 URL = '/WebBridge/WebBridge'

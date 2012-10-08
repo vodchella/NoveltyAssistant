@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric5 project file for project novelty_assistant -->
-<!-- Saved: 2012-09-18, 20:10:00 -->
+<!-- Saved: 2012-10-08, 21:36:44 -->
 <!-- Copyright (C) 2012 Twister, twister.kz@gmail.com -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -28,6 +28,10 @@
     <Source>get_date_time.py</Source>
     <Source>constants.py</Source>
     <Source>str_utils.py</Source>
+    <Source>service_list.py</Source>
+    <Source>tray_application.py</Source>
+    <Source>main_form.py</Source>
+    <Source>qt_common.py</Source>
   </Sources>
   <Forms>
     <Form>gui/main_form.ui</Form>
