@@ -4,7 +4,7 @@ import datetime
 from qt_common          import *
 from get_date_time      import GetDateTime
 from remote_functions   import set_coming_time, set_leaving_time
-from errors             import GuiException
+from errors             import GuiException, RaisedGuiException
 
 class main_form(QDialog):
     ui = None
@@ -125,4 +125,4 @@ class main_form(QDialog):
             else:
                 self.ui.txtSearchText.setPalette(self.createDefaultPalette())
         except Exception as err:
-            raise GuiException('%s: %s' % (err.__class__.__name__, err.__str__()))
+            raise RaisedGuiException(err)
