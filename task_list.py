@@ -2,7 +2,7 @@
 
 from qt_common          import *
 from xml.dom.minidom    import parseString
-from xml_utils          import get_node_element_value, dict_to_xml, prepare_string
+from xml_utils          import get_node_element_value, dict_to_xml, prepare_string, get_xml_field_value
 from str_utils          import ireplace_ex
 from remote_functions   import get_worksheets, set_worksheet
 from errors             import GuiException
@@ -438,7 +438,7 @@ class task_item(QFrame):
             QObject.emit( self.parent_task_list, SIGNAL('totalTimeChanged()') )
     
     def setDesc(self, desc):
-        self.lblDesc.setText(desc)
+        self.lblDesc.setText(unicode(desc))
     
     def setTaskType(self, task_type_id):
         self.task_type_id = int(task_type_id)
