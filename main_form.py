@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 import datetime
 from qt_common          import *
@@ -106,20 +106,23 @@ class main_form(QDialog):
         QObject.emit( self, SIGNAL('clearAllSearchSelectionsInTaskList()') )
         first_widget = None
         
-        txt_u = unicode(text).upper().strip()
-        if txt_u:
-            for gr in filter(lambda g: g.group_id != -1, self.tl.groups):
-                widget = highlightLabelIfNeed(gr.label)
-                if first_widget is None: first_widget = widget
-                for item in filter(lambda i: i.group_id == gr.group_id, self.tl.items):
-                    widget = highlightLabelIfNeed(item.lblDesc)
+        try:
+            txt_u = unicode(text).upper().strip()
+            if txt_u:
+                for gr in filter(lambda g: g.group_id != -1, self.tl.groups):
+                    widget = highlightLabelIfNeed(gr.label)
                     if first_widget is None: first_widget = widget
-                    widget = highlightLabelIfNeed(item.lblTime)
-                    if first_widget is None: first_widget = widget
-            if first_widget is not None:
-                self.tl.ensureWidgetVisible(first_widget)
-                self.ui.txtSearchText.setPalette(self.createDefaultPalette())
+                    for item in filter(lambda i: i.group_id == gr.group_id, self.tl.items):
+                        widget = highlightLabelIfNeed(item.lblDesc)
+                        if first_widget is None: first_widget = widget
+                        widget = highlightLabelIfNeed(item.lblTime)
+                        if first_widget is None: first_widget = widget
+                if first_widget is not None:
+                    self.tl.ensureWidgetVisible(first_widget)
+                    self.ui.txtSearchText.setPalette(self.createDefaultPalette())
+                else:
+                    self.ui.txtSearchText.setPalette(self.createNotFoundPalette())
             else:
-                self.ui.txtSearchText.setPalette(self.createNotFoundPalette())
-        else:
-            self.ui.txtSearchText.setPalette(self.createDefaultPalette())
+                self.ui.txtSearchText.setPalette(self.createDefaultPalette())
+        except Exception as err:
+            raise GuiException('%s: %s' % (err.__class__.__name__, err.__str__()))
