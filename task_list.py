@@ -5,7 +5,7 @@ from xml.dom.minidom    import parseString
 from xml_utils          import get_node_element_value, dict_to_xml, prepare_string, get_xml_field_value
 from str_utils          import ireplace_ex
 from remote_functions   import get_worksheets, set_worksheet
-from errors             import GuiException
+from errors             import GuiException, RaisedGuiException
 from cache              import getTaskTypes, getCustomers
 
 def getTimeText(minutes):
@@ -286,49 +286,52 @@ class task_item(QFrame):
             self.txt.setFocus()
             raise GuiException('Укажите описание выполненных работ')
         
-        new_group_id = self.cboCustomer.itemData(self.cboCustomer.currentIndex()).toInt()[0]
-        new_task_type_id = self.cboTaskType.itemData(self.cboTaskType.currentIndex()).toInt()[0]
-        new_time = self.txtTime.value()
-        
-        xml_str = dict_to_xml(dict(WORKSHEETS = dict(WORKSHEET = dict(
-            WORKSHEET_ID = self.worksheet_id,
-            CUSTOMER_ID = new_group_id,
-            TASK_TYPE_ID = new_task_type_id,
-            DESCRIPTION = prepare_string(new_desc_utf8),
-            DURATION = new_time,
-            STAFF_ID = self.parent_task_list.staff_id
-            ))))
-
-        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
+            new_group_id = self.cboCustomer.itemData(self.cboCustomer.currentIndex()).toInt()[0]
+            new_task_type_id = self.cboTaskType.itemData(self.cboTaskType.currentIndex()).toInt()[0]
+            new_time = self.txtTime.value()
+            
+            xml_str = dict_to_xml(dict(WORKSHEETS = dict(WORKSHEET = dict(
+                WORKSHEET_ID = self.worksheet_id,
+                CUSTOMER_ID = new_group_id,
+                TASK_TYPE_ID = new_task_type_id,
+                DESCRIPTION = prepare_string(new_desc_utf8),
+                DURATION = new_time,
+                STAFF_ID = self.parent_task_list.staff_id
+                ))))
+
+            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+
             result_xml = set_worksheet(xml_str)
             if '<ACTION>INSERTED</ACTION>' in result_xml:
                 self.worksheet_id = int(get_xml_field_value(result_xml, 'WORKSHEET_ID'))
+            
+            if new_group_id != self.group_id:
+                gr = self.parent_task_list.getGroupById(new_group_id)
+                if gr is None:
+                    group_name = getCustomerNameById(new_group_id)
+                    if group_name is None:
+                        raise GuiException('Заказчик с ID равным %i не существет' % new_group_id)
+                    gr = task_group(self.parent_task_list)
+                    gr.setCaption(group_name)
+                    self.parent_task_list.addGroup(gr, new_group_id)
+                old_group_id = self.group_id
+                self.parent_task_list.moveItemToGroup(self.item_index, new_group_id)
+                if self.parent_task_list.getItemsCountInGroup(old_group_id) == 0:
+                    if old_group_id != -1:
+                        self.parent_task_list.removeGroup(old_group_id)
+                    else:
+                        self.parent_task_list.hideNewItemGroup()
+            
+            self.setTaskType(new_task_type_id)
+            self.setDesc(new_desc)
+            self.setTime(new_time)
+            
+            self.stopEdit()
+        except Exception as err:
+            raise RaisedGuiException(err)
         finally:
             QApplication.restoreOverrideCursor()
-        
-        if new_group_id != self.group_id:
-            gr = self.parent_task_list.getGroupById(new_group_id)
-            if gr is None:
-                group_name = getCustomerNameById(new_group_id)
-                if group_name is None:
-                    raise GuiException('Заказчик с ID равным %i не существет' % new_group_id)
-                gr = task_group(self.parent_task_list)
-                gr.setCaption(group_name)
-                self.parent_task_list.addGroup(gr, new_group_id)
-            old_group_id = self.group_id
-            self.parent_task_list.moveItemToGroup(self.item_index, new_group_id)
-            if self.parent_task_list.getItemsCountInGroup(old_group_id) == 0:
-                if old_group_id != -1:
-                    self.parent_task_list.removeGroup(old_group_id)
-                else:
-                    self.parent_task_list.hideNewItemGroup()
-        
-        self.setTaskType(new_task_type_id)
-        self.setDesc(new_desc)
-        self.setTime(new_time)
-        
-        self.stopEdit()
     
     @pyqtSlot()
     def stopEdit(self):
