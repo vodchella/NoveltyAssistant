@@ -6,7 +6,7 @@ from xml_utils          import get_node_element_value, dict_to_xml, prepare_stri
 from str_utils          import ireplace_ex
 from remote_functions   import get_worksheets, set_worksheet
 from errors             import GuiException, RaisedGuiException
-from cache              import getTaskTypes, getCustomers
+from cache              import getTaskTypes, getCustomers, getCustomerNameById
 
 def getTimeText(minutes):
     m = int(minutes)
