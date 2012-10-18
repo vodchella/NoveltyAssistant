@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
 #
-# Created: Sat Oct  6 00:39:51 2012
+# Created: Thu Oct 18 22:47:32 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -168,9 +168,22 @@ class Ui_frmMain(object):
         self.horizontalLayout_4.addWidget(self.cmdRefreshTimeSheet)
         self.gridLayout.addWidget(self.widget_2, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tabTime, _fromUtf8("Приход / уход"))
-        self.tabAppServers = QtGui.QWidget()
-        self.tabAppServers.setObjectName(_fromUtf8("tabAppServers"))
-        self.tabWidget.addTab(self.tabAppServers, _fromUtf8(""))
+        self.tabServices = QtGui.QWidget()
+        self.tabServices.setObjectName(_fromUtf8("tabServices"))
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.tabServices)
+        self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
+        self.widget = QtGui.QWidget(self.tabServices)
+        self.widget.setObjectName(_fromUtf8("widget"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.widget)
+        self.verticalLayout_2.setMargin(0)
+        self.verticalLayout_2.setMargin(0)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.treeServices = services_tree(self.widget)
+        self.treeServices.setIconSize(QtCore.QSize(32, 32))
+        self.treeServices.setObjectName(_fromUtf8("treeServices"))
+        self.verticalLayout_2.addWidget(self.treeServices)
+        self.verticalLayout_3.addWidget(self.widget)
+        self.tabWidget.addTab(self.tabServices, _fromUtf8(""))
         self.gridLayout_3.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(frmMain)
@@ -186,7 +199,7 @@ class Ui_frmMain(object):
         self.cmdNew.setShortcut(QtGui.QApplication.translate("frmMain", "Ctrl+N", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSearch.setToolTip(QtGui.QApplication.translate("frmMain", "Поиск (CTRL+F)", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdSearch.setShortcut(QtGui.QApplication.translate("frmMain", "Ctrl+F", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("frmMain", "Задачи на дату:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("frmMain", "Отобразить на дату:", None, QtGui.QApplication.UnicodeUTF8))
         self.dt.setDisplayFormat(QtGui.QApplication.translate("frmMain", "dd.MM.yyyy", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefresh.setToolTip(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefresh.setText(QtGui.QApplication.translate("frmMain", "Обновить", None, QtGui.QApplication.UnicodeUTF8))
@@ -199,9 +212,11 @@ class Ui_frmMain(object):
         self.cmdRefreshTimeSheet.setToolTip(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefreshTimeSheet.setText(QtGui.QApplication.translate("frmMain", "Обновить", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefreshTimeSheet.setShortcut(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabAppServers), QtGui.QApplication.translate("frmMain", "Серверы приложений", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeServices.headerItem().setText(0, QtGui.QApplication.translate("frmMain", "Список серверов приложений", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabServices), QtGui.QApplication.translate("frmMain", "Серверы приложений", None, QtGui.QApplication.UnicodeUTF8))
 
 from timesheet_grid import timesheet_grid
+from services_tree import services_tree
 from task_list import tasks_count_label, tasks_status_label, task_list
 import novelty_assistant_rc
 

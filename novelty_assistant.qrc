@@ -5,5 +5,7 @@
     <file alias="date_time_64.ico">img/ico/date_time_64.ico</file>
     <file alias="search_16.ico">img/ico/search_16.ico</file>
     <file alias="cancel_16.ico">img/ico/cancel_16.ico</file>
+    <file alias="server_32.ico">img/ico/server_32.ico</file>
+    <file alias="service_32.ico">img/ico/service_32.ico</file>
   </qresource>
 </RCC>

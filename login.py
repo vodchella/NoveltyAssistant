@@ -5,7 +5,7 @@ from constants          import *
 from gui.Ui_login_form  import *
 from remote_functions   import remote_login
 from cache              import getSavedLoginData, saveLoginData
-from errors             import set_last_error
+from errors             import set_last_error, get_last_error
 
 def loginAndSaveData(user_name, user_pass, check_state):
     user_id = 0

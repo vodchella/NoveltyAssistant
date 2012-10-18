@@ -9,7 +9,6 @@ from cache              import initCache, fillCache
 from login              import tryLogin
 from main_form          import main_form
 from tray_application   import tray_application
-#from service_list       import service_list
 from errors             import get_last_error
 
 
@@ -44,53 +43,56 @@ def main():
             
             app.main_form = main_form()
             app.main_form.ui = Ui_frmMain()
-            app.main_form.ui.setupUi(app.main_form)
-            app.main_form.ui.searchWidget.hide()
+            ui = app.main_form.ui
+            ui.setupUi(app.main_form)
+            ui.searchWidget.hide()
             app.main_form.setWindowTitle(PROGRAM_NAME_FULL)
             app.main_form.show()
-            
-            #list = service_list(app.main_form.ui.tabAppServers)
-            #list.setGeometry(QRect(50, 70, 256, 192))
-            #list.show() 
+
+            #
+            # Services
+            #
+            ui.treeServices.updateServices()
+            if not ui.treeServices.getItemsCount():
+                ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabServices))
             
             if staff_id is not None:
                 #
                 # Tasks
                 #
-                app.main_form.tl = app.main_form.ui.tl
+                app.main_form.tl = ui.tl
                 app.main_form.tl.main_form = app.main_form
                 app.main_form.tl.staff_id = staff_id
                 
-                app.main_form.ui.statusLabel.task_list = app.main_form.tl
-                app.main_form.ui.countLabel.task_list  = app.main_form.tl
+                ui.statusLabel.task_list = app.main_form.tl
+                ui.countLabel.task_list  = app.main_form.tl
 
-                QObject.connect( app.main_form.tl, SIGNAL('totalCountChanged()'), app.main_form.ui.countLabel.updateCount )
-                QObject.connect( app.main_form.tl, SIGNAL('totalTimeChanged()'), app.main_form.ui.statusLabel.updateStatus )
+                QObject.connect( app.main_form.tl, SIGNAL('totalCountChanged()'), ui.countLabel.updateCount )
+                QObject.connect( app.main_form.tl, SIGNAL('totalTimeChanged()'), ui.statusLabel.updateStatus )
                 QObject.connect( app.main_form.tl, SIGNAL('startEditItem()'), app.main_form.stopSearching )
-                QObject.connect( app.main_form.ui.cmdNew, SIGNAL('clicked()'), app.main_form.addTask )
-                QObject.connect( app.main_form.ui.cmdRefresh, SIGNAL('clicked()'), app.main_form.refreshTaskList )
-                QObject.connect( app.main_form.ui.cmdRefresh, SIGNAL('clicked()'), app.main_form.stopSearching )
-                QObject.connect( app.main_form.ui.cmdSearch, SIGNAL('clicked()'), app.main_form.startSearching )
-                QObject.connect( app.main_form.ui.cmdCancelSearch, SIGNAL('clicked()'), app.main_form.stopSearching )
-                QObject.connect( app.main_form.ui.txtSearchText, SIGNAL('textChanged(QString)'), app.main_form.searchForText )
-                QObject.connect( app.main_form.ui.dt, SIGNAL('dateChanged(QDate)'), app.main_form.tl.updateOnDate )
-                QObject.connect( app.main_form.ui.dt, SIGNAL('dateChanged(QDate)'), app.main_form.stopSearching )
+                QObject.connect( ui.cmdNew, SIGNAL('clicked()'), app.main_form.addTask )
+                QObject.connect( ui.cmdRefresh, SIGNAL('clicked()'), app.main_form.refreshTaskList )
+                QObject.connect( ui.cmdRefresh, SIGNAL('clicked()'), app.main_form.stopSearching )
+                QObject.connect( ui.cmdSearch, SIGNAL('clicked()'), app.main_form.startSearching )
+                QObject.connect( ui.cmdCancelSearch, SIGNAL('clicked()'), app.main_form.stopSearching )
+                QObject.connect( ui.txtSearchText, SIGNAL('textChanged(QString)'), app.main_form.searchForText )
+                QObject.connect( ui.dt, SIGNAL('dateChanged(QDate)'), app.main_form.tl.updateOnDate )
+                QObject.connect( ui.dt, SIGNAL('dateChanged(QDate)'), app.main_form.stopSearching )
                 app.main_form.ui.dt.setDate(QDate.currentDate())
                 
                 #
                 # Time
                 #
-                app.main_form.ui.tblWeek.staff_id = staff_id
-                QObject.connect( app.main_form.ui.cmdComing,  SIGNAL('clicked()'), app.main_form.setNewComingTime )
-                QObject.connect( app.main_form.ui.cmdLeaving, SIGNAL('clicked()'), app.main_form.setNewLeavingTime )
-                QObject.connect( app.main_form.ui.cmdRefreshTimeSheet, SIGNAL('clicked()'), app.main_form.ui.tblWeek.updateForCurrentWeek )
+                ui.tblWeek.staff_id = staff_id
+                QObject.connect( ui.cmdComing,  SIGNAL('clicked()'), app.main_form.setNewComingTime )
+                QObject.connect( ui.cmdLeaving, SIGNAL('clicked()'), app.main_form.setNewLeavingTime )
+                QObject.connect( ui.cmdRefreshTimeSheet, SIGNAL('clicked()'), ui.tblWeek.updateForCurrentWeek )
                 
                 #
                 # Other
                 #
                 QObject.connect( app.main_form.ui.tabWidget, SIGNAL('currentChanged(int)'), app.main_form.tabChanged )
             else:
-                ui = app.main_form.ui
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTasks))
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTime))
         finally:

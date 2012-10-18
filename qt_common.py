@@ -7,4 +7,4 @@ from PyQt4.QtGui import QStyledItemDelegate, QPushButton, QListView, QAbstractIt
 from PyQt4.QtGui import QScrollArea, QVBoxLayout, QWidget, QSpacerItem, QSizePolicy, QFrame
 from PyQt4.QtGui import QFont, QPlainTextEdit, QHBoxLayout, QSpinBox, QDialogButtonBox, QShortcut
 from PyQt4.QtGui import QLabel, QComboBox, QStackedWidget, QTableWidgetItem, QTableWidget
-from PyQt4.QtGui import QSystemTrayIcon, QMenu, QIcon, QPixmap
+from PyQt4.QtGui import QSystemTrayIcon, QMenu, QIcon, QPixmap, QTreeWidget, QTreeWidgetItem
