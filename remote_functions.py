@@ -57,3 +57,6 @@ def set_new_in_version(txt):
     return get_data_xml("SetAssistantVersionDescription",
         dict_to_xml({'PARAMS':{'VERSION_DESCRIPTION':txt}})
         )
+
+def get_controllable_services():
+    return get_data_xml("GetControllableServices", "")
