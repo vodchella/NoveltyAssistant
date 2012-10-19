@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from xml.dom.minidom    import parseString
-from xml_utils          import get_node_element_value
+from constants          import *
+from xml_utils          import get_node_element_value, get_xml_field_value
 from qt_common          import *
-from errors             import RaisedGuiException
+from errors             import RaisedGuiException, GuiException
 from remote_functions   import get_controllable_services
+from novelty            import remote_call_ex, authenticate
 
 class server_data():
     server  = None
@@ -44,6 +46,8 @@ class services_tree(QTreeWidget):
         self.bInitialized = True
     
     def doServiceAction(self, action):
+        global session_id
+        
         item = self.currentItem()
         if item is not None:
             parent = item.parent()
@@ -51,19 +55,32 @@ class services_tree(QTreeWidget):
                 server_data  = parent.data(0, Qt.UserRole).toPyObject()
                 service_data = item.data(0, Qt.UserRole).toPyObject()
                 
-                ssl_str = ''
-                if server_data.use_ssl:
-                    ssl_str = 's'
-                act_str = ''
                 if action == self.SERVICE_ACTION_START:
-                    act_str = 'Starting'
+                    cmd_str = 'startService'
                 elif action == self.SERVICE_ACTION_STOP:
-                    act_str = 'Stopping'
+                    cmd_str = 'stopService'
                 elif action == self.SERVICE_ACTION_RESTART:
-                    act_str = 'Restarting'
+                    cmd_str = 'restartService'
+                else:
+                    raise GuiException(u'Неизвестная команда')
                 
-                print 'http%s://%s:%i' % (ssl_str, server_data.server, server_data.port)
-                print '%s %s...' % (act_str, service_data.service_name)
+                try:
+                    QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+                    xml = remote_call_ex(cmd_str,
+                                         dict(serviceName=service_data.service_name, sessionID=authenticate()),
+                                         server_data.server,
+                                         server_data.port,
+                                         server_data.use_ssl)
+                    QApplication.restoreOverrideCursor()
+                    result = get_xml_field_value(xml, 'return')
+                    if result is not None:
+                        result = result.strip()
+                    if result:
+                        raise GuiException(result)
+                    else:
+                        QMessageBox.information(None, PROGRAM_NAME, u'Операция завершена успешно', QMessageBox.Ok)
+                finally:
+                    QApplication.restoreOverrideCursor()
     
     @pyqtSlot()
     def startService(self):

@@ -7,9 +7,6 @@ from constants  import *
 from xml_utils  import replace_field_in_xml, get_xml_field_value, dict_to_xml
 from errors     import GuiException, set_last_error
 
-HOST = 'home2.novelty.kz:28110'
-URL = '/WebBridge/WebBridge'
-
 xml_template = \
 """<?xml version = "1.0" encoding = "UTF8" ?>
 <S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
@@ -24,6 +21,32 @@ session_id = ''
 user_name = ''
 user_pass = ''
 user_id = 0
+
+def request_ex(xml, server, port, use_ssl, url=SERVICES_URL):
+    host_str = '%s:%s' % (server, port)
+    if use_ssl:
+        h = httplib.HTTPSConnection(host_str)
+    else:
+        h = httplib.HTTPConnection(host_str)
+    headers = {
+        'Host':host_str,
+        'Content-Type':'text/xml; charset=utf-8',
+        'Content-Length':len(xml),
+        }
+    try:
+        h.request('POST', url, body=xml, headers=headers)
+    except:
+        raise GuiException(u'Сервис управления серверами приложений недоступен')
+    r = h.getresponse()
+    d = r.read()
+    
+    err = get_xml_field_value(d, 'faultstring')
+    if err is None:
+        err = get_xml_field_value(d, 'ErrorMessage')
+    if err is not None:
+        raise GuiException(err)
+    
+    return d
 
 def request(xml, SOAPAction):
     global session_id
@@ -59,6 +82,10 @@ def request(xml, SOAPAction):
 def remote_call(function, params):
     xml = xml_template % {'function':function, 'param_list':dict_to_xml(params)}
     return request(xml, function)
+
+def remote_call_ex(function, params, server, port, use_ssl, url=SERVICES_URL):
+    xml = xml_template % {'function':function, 'param_list':dict_to_xml(params)}
+    return request_ex(xml, server, port, use_ssl, url)
 
 def authenticate():
     global session_id, user_id
