@@ -22,7 +22,17 @@ user_name = ''
 user_pass = ''
 user_id = 0
 
-def request_ex(xml, server, port, use_ssl, url=SERVICES_URL):
+def set_session_in_xml(xml, session):
+    new_xml = replace_field_in_xml(xml, 'aSessionID', session)
+    new_xml = replace_field_in_xml(xml, 'sessionID', session)
+    return new_xml
+
+#
+#  TODO !!!
+#  Сейчас аутентификация происходит только на home.novelty.
+#  Об этом не стоит забывать и, в случае чего, необходимо переделать.
+#
+def request_ex(xml, server, port, use_ssl, url=SERVICES_URL, err_msg='Невозможно установить соединение с БД'):
     host_str = '%s:%s' % (server, port)
     if use_ssl:
         h = httplib.HTTPSConnection(host_str)
@@ -36,61 +46,36 @@ def request_ex(xml, server, port, use_ssl, url=SERVICES_URL):
     try:
         h.request('POST', url, body=xml, headers=headers)
     except:
-        raise GuiException(u'Сервис управления серверами приложений недоступен')
-    r = h.getresponse()
-    d = r.read()
-    
-    err = get_xml_field_value(d, 'faultstring')
-    if err is None:
-        err = get_xml_field_value(d, 'ErrorMessage')
-    if err is not None:
-        raise GuiException(err)
-    
-    return d
-
-def request(xml, SOAPAction):
-    global session_id
-
-    h = httplib.HTTPSConnection(HOST)
-    headers = {
-        'Host':HOST,
-        'Content-Type':'text/xml; charset=utf-8',
-        'Content-Length':len(xml),
-        'SOAPAction':'"https://WebBridge.novelty.kz/%s"' % SOAPAction,
-        }
-    try:
-        h.request ('POST', URL, body=xml, headers=headers)
-    except:
         set_last_error(ERROR_CANT_CONNECT)
-        raise GuiException('Невозможно установить соединение с БД')
+        raise GuiException(err_msg)
     r = h.getresponse()
     d = r.read()
-
+    
     err = get_xml_field_value(d, 'faultstring')
     if err is None:
         err = get_xml_field_value(d, 'ErrorMessage')
-
     if err is not None:
-        if 'java.lang.Exception: Сессия не определена' in err:
-            session_id = ''
-            return request(replace_field_in_xml(xml, 'aSessionID', authenticate()), SOAPAction)
+        if 'Сессия не определена' in err:
+            return request_ex(set_session_in_xml(xml, authenticate(force=True)), server, port, use_ssl, url, err_msg)
         else:
             raise GuiException(err)
-
+    
     return d
+
+def request(xml):
+    return request_ex(xml, HOME_NOVELTY_SERVER, HOME_NOVELTY_PORT, True, BRIDGE_URL)
 
 def remote_call(function, params):
     xml = xml_template % {'function':function, 'param_list':dict_to_xml(params)}
-    return request(xml, function)
+    return request(xml)
 
 def remote_call_ex(function, params, server, port, use_ssl, url=SERVICES_URL):
     xml = xml_template % {'function':function, 'param_list':dict_to_xml(params)}
-    return request_ex(xml, server, port, use_ssl, url)
+    return request_ex(xml, server, port, use_ssl, url, 'Сервис управления серверами приложений недоступен')
 
-def authenticate():
+def authenticate(force=False):
     global session_id, user_id
-
-    if not session_id:
+    if not session_id or force:
         param = dict(aName = user_name, aPassword = user_pass, aAlias = 'home')
         result_xml = remote_call('authenticateUser', param)
         session_id = get_xml_field_value(result_xml, 'sessionID')

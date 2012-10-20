@@ -21,6 +21,7 @@ class services_tree(QTreeWidget):
     SERVICE_ACTION_STOP     = 2
     SERVICE_ACTION_RESTART  = 3
     
+    user_id = 0
     service_menu = None
     bInitialized = False
     count = 0
@@ -67,7 +68,9 @@ class services_tree(QTreeWidget):
                 try:
                     QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
                     xml = remote_call_ex(cmd_str,
-                                         dict(serviceName=service_data.service_name, sessionID=authenticate()),
+                                         dict(serviceName=service_data.service_name,
+                                              sessionID=authenticate(),
+                                              userID=self.user_id),
                                          server_data.server,
                                          server_data.port,
                                          server_data.use_ssl)

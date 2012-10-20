@@ -52,6 +52,7 @@ def main():
             #
             # Services
             #
+            ui.treeServices.user_id = user_id
             ui.treeServices.updateServices()
             if not ui.treeServices.getItemsCount():
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabServices))
