@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
+# Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
 #
-# Created: Thu Oct 18 22:47:32 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Mon Oct 22 14:03:19 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -179,7 +179,7 @@ class Ui_frmMain(object):
         self.verticalLayout_2.setMargin(0)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.treeServices = services_tree(self.widget)
-        self.treeServices.setIconSize(QtCore.QSize(32, 32))
+        self.treeServices.setIconSize(QtCore.QSize(24, 24))
         self.treeServices.setObjectName(_fromUtf8("treeServices"))
         self.verticalLayout_2.addWidget(self.treeServices)
         self.verticalLayout_3.addWidget(self.widget)

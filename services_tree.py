@@ -29,7 +29,7 @@ class services_tree(QTreeWidget):
     def __init__(self,  parent):
         super(services_tree, self).__init__(parent)
         self.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.setIconSize(QSize(32, 32))
+        self.setIconSize(QSize(24, 24))
         
         menu = QMenu()
         act = menu.addAction(u'Запустить')
