@@ -69,8 +69,7 @@ class services_tree(QTreeWidget):
                     QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
                     xml = remote_call_ex(cmd_str,
                                          dict(serviceName=service_data.service_name,
-                                              sessionID=authenticate(),
-                                              userID=self.user_id),
+                                              sessionID=authenticate()),
                                          server_data.server,
                                          server_data.port,
                                          server_data.use_ssl)
