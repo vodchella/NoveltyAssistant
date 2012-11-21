@@ -32,22 +32,29 @@ def set_session_in_xml(xml, session):
 #  Сейчас аутентификация происходит только на home.novelty.
 #  Об этом не стоит забывать и, в случае чего, необходимо переделать.
 #
-def request_ex(xml, server, port, use_ssl, url=SERVICES_URL, err_msg='Невозможно установить соединение с БД'):
-    host_str = '%s:%s' % (server, port)
-    if use_ssl:
-        h = httplib.HTTPSConnection(host_str)
-    else:
-        h = httplib.HTTPConnection(host_str)
-    headers = {
-        'Host':host_str,
-        'Content-Type':'text/xml; charset=utf-8',
-        'Content-Length':len(xml),
-        }
-    try:
-        h.request('POST', url, body=xml, headers=headers)
-    except:
+def request_ex(xml, servers, port, use_ssl, url=SERVICES_URL, err_msg='Невозможно установить соединение с БД'):
+    connected = False
+    for server in servers:
+        host_str = '%s:%s' % (server, port)
+        if use_ssl:
+            h = httplib.HTTPSConnection(host_str)
+        else:
+            h = httplib.HTTPConnection(host_str)
+        headers = {
+            'Host':host_str,
+            'Content-Type':'text/xml; charset=utf-8',
+            'Content-Length':len(xml),
+            }
+        try:
+            h.request('POST', url, body=xml, headers=headers)
+            connected = True
+        except:
+            pass
+            
+    if not connected:
         set_last_error(ERROR_CANT_CONNECT)
         raise GuiException(err_msg)
+    
     r = h.getresponse()
     d = r.read()
     
@@ -56,14 +63,14 @@ def request_ex(xml, server, port, use_ssl, url=SERVICES_URL, err_msg='Невоз
         err = get_xml_field_value(d, 'ErrorMessage')
     if err is not None:
         if 'Сессия не определена' in err:
-            return request_ex(set_session_in_xml(xml, authenticate(force=True)), server, port, use_ssl, url, err_msg)
+            return request_ex(set_session_in_xml(xml, authenticate(force=True)), [server], port, use_ssl, url, err_msg)
         else:
             raise GuiException(err)
     
     return d
 
 def request(xml):
-    return request_ex(xml, HOME_NOVELTY_SERVER, HOME_NOVELTY_PORT, True, BRIDGE_URL)
+    return request_ex(xml, HOME_NOVELTY_SERVERS, HOME_NOVELTY_PORT, True, BRIDGE_URL)
 
 def remote_call(function, params):
     xml = xml_template % {'function':function, 'param_list':dict_to_xml(params)}
