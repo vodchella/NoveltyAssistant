@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import          urllib
-import          lxml.html
+import urllib
+import lxml.html
 from constants  import *
 
 def get_dinner_html():

@@ -12,7 +12,7 @@ class tray_application(QApplication):
         
         self.tray = QSystemTrayIcon( QIcon(':/images/main_64.ico'), self )
         QObject.connect( self.tray, SIGNAL('activated(QSystemTrayIcon::ActivationReason)'), self.iconActivated )
-        self.tray.setToolTip('Novelty Assistant')
+        self.tray.setToolTip(PROGRAM_NAME_FULL)
         self.tray.show()
         
         menu = QMenu()

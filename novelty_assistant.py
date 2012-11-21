@@ -96,6 +96,8 @@ def main():
             else:
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTasks))
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTime))
+            
+            app.main_form.changeCaption()
         finally:
             QApplication.restoreOverrideCursor()
         

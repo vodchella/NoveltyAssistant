@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
+# Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
 #
-# Created: Mon Oct 22 14:03:19 2012
-#      by: PyQt4 UI code generator 4.9.4
+# Created: Wed Nov 21 23:42:01 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -30,7 +30,9 @@ class Ui_frmMain(object):
         self.gridLayout_3 = QtGui.QGridLayout(frmMain)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.tabWidget = QtGui.QTabWidget(frmMain)
+        self.tabWidget.setToolTip(_fromUtf8(""))
         self.tabWidget.setTabPosition(QtGui.QTabWidget.South)
+        self.tabWidget.setIconSize(QtCore.QSize(32, 32))
         self.tabWidget.setDocumentMode(True)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.tabTasks = QtGui.QWidget()
@@ -123,7 +125,9 @@ class Ui_frmMain(object):
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem1)
         self.gridLayout_2.addWidget(self.searchWidget, 1, 0, 1, 1)
-        self.tabWidget.addTab(self.tabTasks, _fromUtf8("Выполненные работы"))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/work_32.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabWidget.addTab(self.tabTasks, icon3, _fromUtf8(""))
         self.tabTime = QtGui.QWidget()
         self.tabTime.setObjectName(_fromUtf8("tabTime"))
         self.gridLayout = QtGui.QGridLayout(self.tabTime)
@@ -167,7 +171,9 @@ class Ui_frmMain(object):
         self.cmdRefreshTimeSheet.setObjectName(_fromUtf8("cmdRefreshTimeSheet"))
         self.horizontalLayout_4.addWidget(self.cmdRefreshTimeSheet)
         self.gridLayout.addWidget(self.widget_2, 0, 0, 1, 1)
-        self.tabWidget.addTab(self.tabTime, _fromUtf8("Приход / уход"))
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/date_time_32.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabWidget.addTab(self.tabTime, icon4, _fromUtf8(""))
         self.tabServices = QtGui.QWidget()
         self.tabServices.setObjectName(_fromUtf8("tabServices"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.tabServices)
@@ -183,7 +189,14 @@ class Ui_frmMain(object):
         self.treeServices.setObjectName(_fromUtf8("treeServices"))
         self.verticalLayout_2.addWidget(self.treeServices)
         self.verticalLayout_3.addWidget(self.widget)
-        self.tabWidget.addTab(self.tabServices, _fromUtf8(""))
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/service_32.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabWidget.addTab(self.tabServices, icon5, _fromUtf8(""))
+        self.tabDinner = QtGui.QWidget()
+        self.tabDinner.setObjectName(_fromUtf8("tabDinner"))
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/dinner_32.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabWidget.addTab(self.tabDinner, icon6, _fromUtf8(""))
         self.gridLayout_3.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(frmMain)
@@ -207,13 +220,16 @@ class Ui_frmMain(object):
         self.label_2.setText(QtGui.QApplication.translate("frmMain", "Поиск:", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdCancelSearch.setToolTip(QtGui.QApplication.translate("frmMain", "Отмена (ESC)", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdCancelSearch.setShortcut(QtGui.QApplication.translate("frmMain", "Esc", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabToolTip(self.tabWidget.indexOf(self.tabTasks), QtGui.QApplication.translate("frmMain", "Выполненные работы", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdComing.setText(QtGui.QApplication.translate("frmMain", "Приход", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdLeaving.setText(QtGui.QApplication.translate("frmMain", "Уход", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefreshTimeSheet.setToolTip(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefreshTimeSheet.setText(QtGui.QApplication.translate("frmMain", "Обновить", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdRefreshTimeSheet.setShortcut(QtGui.QApplication.translate("frmMain", "F5", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabToolTip(self.tabWidget.indexOf(self.tabTime), QtGui.QApplication.translate("frmMain", "Приход / уход", None, QtGui.QApplication.UnicodeUTF8))
         self.treeServices.headerItem().setText(0, QtGui.QApplication.translate("frmMain", "Список серверов приложений", None, QtGui.QApplication.UnicodeUTF8))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabServices), QtGui.QApplication.translate("frmMain", "Серверы приложений", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabToolTip(self.tabWidget.indexOf(self.tabServices), QtGui.QApplication.translate("frmMain", "Серверы приложений", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabToolTip(self.tabWidget.indexOf(self.tabDinner), QtGui.QApplication.translate("frmMain", "Заказ обедов", None, QtGui.QApplication.UnicodeUTF8))
 
 from timesheet_grid import timesheet_grid
 from services_tree import services_tree

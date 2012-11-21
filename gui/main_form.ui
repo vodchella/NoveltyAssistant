@@ -30,18 +30,34 @@
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
+     <property name="toolTip">
+      <string/>
+     </property>
      <property name="tabPosition">
       <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <property name="iconSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
      <property name="documentMode">
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="tabTasks">
+      <attribute name="icon">
+       <iconset resource="../novelty_assistant.qrc">
+        <normaloff>:/images/work_32.ico</normaloff>:/images/work_32.ico</iconset>
+      </attribute>
       <attribute name="title">
-       <string notr="true">Выполненные работы</string>
+       <string notr="true"/>
+      </attribute>
+      <attribute name="toolTip">
+       <string>Выполненные работы</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="3" column="0">
@@ -292,8 +308,15 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabTime">
+      <attribute name="icon">
+       <iconset resource="../novelty_assistant.qrc">
+        <normaloff>:/images/date_time_32.ico</normaloff>:/images/date_time_32.ico</iconset>
+      </attribute>
       <attribute name="title">
-       <string notr="true">Приход / уход</string>
+       <string notr="true"/>
+      </attribute>
+      <attribute name="toolTip">
+       <string>Приход / уход</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
        <item row="1" column="0">
@@ -412,7 +435,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tabServices">
+      <attribute name="icon">
+       <iconset resource="../novelty_assistant.qrc">
+        <normaloff>:/images/service_32.ico</normaloff>:/images/service_32.ico</iconset>
+      </attribute>
       <attribute name="title">
+       <string/>
+      </attribute>
+      <attribute name="toolTip">
        <string>Серверы приложений</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -441,6 +471,18 @@
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="tabDinner">
+      <attribute name="icon">
+       <iconset resource="../novelty_assistant.qrc">
+        <normaloff>:/images/dinner_32.ico</normaloff>:/images/dinner_32.ico</iconset>
+      </attribute>
+      <attribute name="title">
+       <string/>
+      </attribute>
+      <attribute name="toolTip">
+       <string>Заказ обедов</string>
+      </attribute>
      </widget>
     </widget>
    </item>

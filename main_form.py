@@ -2,6 +2,7 @@
 
 import datetime
 from qt_common          import *
+from constants          import *
 from get_date_time      import GetDateTime
 from remote_functions   import set_coming_time, set_leaving_time
 from errors             import GuiException, RaisedGuiException
@@ -50,9 +51,14 @@ class main_form(QDialog):
                 self.ui.tblWeek.updateForCurrentWeek()
                 QApplication.restoreOverrideCursor()
     
+    def changeCaption(self):
+        self.setWindowTitle('%s - %s' % (PROGRAM_NAME_FULL, self.ui.tabWidget.tabToolTip(self.ui.tabWidget.currentIndex())))
+    
     @pyqtSlot()
     def tabChanged(self, index):
-        ob_name = self.ui.tabWidget.widget(index).objectName()
+        self.changeCaption()
+        tab = self.ui.tabWidget.widget(index)
+        ob_name = tab.objectName()
         if ob_name == 'tabTime':
             if (self.ui.tblWeek.today is None) or (self.ui.tblWeek.today != datetime.date.today()):
                 self.ui.tblWeek.updateForCurrentWeek()
