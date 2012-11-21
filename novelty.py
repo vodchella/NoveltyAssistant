@@ -78,7 +78,7 @@ def remote_call(function, params):
 
 def remote_call_ex(function, params, server, port, use_ssl, url=SERVICES_URL):
     xml = xml_template % {'function':function, 'param_list':dict_to_xml(params)}
-    return request_ex(xml, server, port, use_ssl, url, 'Сервис управления серверами приложений недоступен')
+    return request_ex(xml, [server], port, use_ssl, url, 'Сервис управления серверами приложений недоступен')
 
 def authenticate(force=False):
     global session_id, user_id
