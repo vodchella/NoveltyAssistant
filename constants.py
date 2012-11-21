@@ -8,7 +8,7 @@ DONT_EXIT_IF_CANT_CONNECT = False
 #
 # Program
 #
-PROGRAM_REVISION_NUMBER = 48
+PROGRAM_REVISION_NUMBER = 49
 PROGRAM_VERSION = '0.02.%s' % PROGRAM_REVISION_NUMBER
 PROGRAM_NAME = 'Novelty Assistant'
 PROGRAM_NAME_FULL = '%s v%s' % (PROGRAM_NAME, PROGRAM_VERSION)
@@ -20,6 +20,11 @@ HOME_NOVELTY_SERVERS    = ['home.novelty.kz', 'home2.novelty.kz']
 HOME_NOVELTY_PORT       = 28110
 BRIDGE_URL              = '/WebBridge/WebBridge'
 SERVICES_URL            = '/WebApps/ServiceController'
+
+#
+# Страница с обеденным меню
+#
+DINNER_HTML = "http://dinner.kz/obed.html"
 
 #
 # Format masks
