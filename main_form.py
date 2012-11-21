@@ -6,6 +6,7 @@ from constants          import *
 from get_date_time      import GetDateTime
 from remote_functions   import set_coming_time, set_leaving_time
 from errors             import GuiException, RaisedGuiException
+from dinner             import get_today_menu
 
 class main_form(QDialog):
     ui = None
@@ -59,9 +60,25 @@ class main_form(QDialog):
         self.changeCaption()
         tab = self.ui.tabWidget.widget(index)
         ob_name = tab.objectName()
+        # Приход/уход
         if ob_name == 'tabTime':
             if (self.ui.tblWeek.today is None) or (self.ui.tblWeek.today != datetime.date.today()):
                 self.ui.tblWeek.updateForCurrentWeek()
+        # Обеды
+        elif ob_name == 'tabDinner':
+            self.ui.lblTodayMenu.setText(DINNER_LOADING_MESSAGE)
+            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+            try:
+                today_menu = get_today_menu()
+                if today_menu:
+                    self.ui.lblTodayMenu.setText('\n'.join(today_menu).decode('utf-8'))
+                else:
+                    self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
+            except Exception as err:
+                self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
+                raise RaisedGuiException(err)
+            finally:
+                QApplication.restoreOverrideCursor()
     
     @pyqtSlot()
     def startSearching(self):

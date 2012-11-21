@@ -8,7 +8,7 @@ DONT_EXIT_IF_CANT_CONNECT = False
 #
 # Program
 #
-PROGRAM_REVISION_NUMBER = 50
+PROGRAM_REVISION_NUMBER = 51
 PROGRAM_VERSION = '0.02.%s' % PROGRAM_REVISION_NUMBER
 PROGRAM_NAME = 'Novelty Assistant'
 PROGRAM_NAME_FULL = '%s v%s' % (PROGRAM_NAME, PROGRAM_VERSION)
@@ -22,9 +22,11 @@ BRIDGE_URL              = '/WebBridge/WebBridge'
 SERVICES_URL            = '/WebApps/ServiceController'
 
 #
-# Страница с обеденным меню
+# Обеды
 #
 DINNER_HTML = "http://dinner.kz/obed.html"
+DINNER_LOADING_MESSAGE = u"Идёт обновление, подождите..."
+DINNER_LOADING_FAULT_MESSAGE = u"Ошибка загрузки данных. Просмотрите меню на сайте <a href='%s'>dinner.kz</a>" % DINNER_HTML
 
 #
 # Format masks
