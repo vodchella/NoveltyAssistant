@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/twister/Dropbox/novelty_assistant/gui/main_form.ui'
+# Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
 #
-# Created: Thu Nov 22 00:50:25 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Nov 22 20:45:25 2012
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_frmMain(object):
     def setupUi(self, frmMain):
         frmMain.setObjectName(_fromUtf8("frmMain"))
-        frmMain.resize(467, 399)
+        frmMain.resize(467, 429)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -196,19 +196,24 @@ class Ui_frmMain(object):
         self.tabDinner.setObjectName(_fromUtf8("tabDinner"))
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.tabDinner)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
-        self.widget_4 = QtGui.QWidget(self.tabDinner)
-        self.widget_4.setMinimumSize(QtCore.QSize(0, 40))
-        self.widget_4.setMaximumSize(QtCore.QSize(16777215, 40))
-        self.widget_4.setObjectName(_fromUtf8("widget_4"))
-        self.horizontalLayout_5 = QtGui.QHBoxLayout(self.widget_4)
+        self.viewAllDinnersWidget = QtGui.QWidget(self.tabDinner)
+        self.viewAllDinnersWidget.setMinimumSize(QtCore.QSize(0, 40))
+        self.viewAllDinnersWidget.setMaximumSize(QtCore.QSize(16777215, 40))
+        self.viewAllDinnersWidget.setObjectName(_fromUtf8("viewAllDinnersWidget"))
+        self.horizontalLayout_5 = QtGui.QHBoxLayout(self.viewAllDinnersWidget)
         self.horizontalLayout_5.setMargin(0)
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
-        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem3)
-        self.cmdAllDinnerOrdersToday = QtGui.QPushButton(self.widget_4)
+        self.cmdAllDinnerOrdersToday = QtGui.QPushButton(self.viewAllDinnersWidget)
+        self.cmdAllDinnerOrdersToday.setAutoDefault(False)
         self.cmdAllDinnerOrdersToday.setObjectName(_fromUtf8("cmdAllDinnerOrdersToday"))
         self.horizontalLayout_5.addWidget(self.cmdAllDinnerOrdersToday)
-        self.verticalLayout_4.addWidget(self.widget_4)
+        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem3)
+        self.cmdRefreshMenu = QtGui.QPushButton(self.viewAllDinnersWidget)
+        self.cmdRefreshMenu.setAutoDefault(False)
+        self.cmdRefreshMenu.setObjectName(_fromUtf8("cmdRefreshMenu"))
+        self.horizontalLayout_5.addWidget(self.cmdRefreshMenu)
+        self.verticalLayout_4.addWidget(self.viewAllDinnersWidget)
         self.frame_2 = QtGui.QFrame(self.tabDinner)
         self.frame_2.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtGui.QFrame.Sunken)
@@ -244,6 +249,8 @@ class Ui_frmMain(object):
         self.chkMenuSalad.setObjectName(_fromUtf8("chkMenuSalad"))
         self.gridLayout_4.addWidget(self.chkMenuSalad, 1, 1, 1, 1)
         self.cmdCreateOrder = QtGui.QPushButton(self.widget_5)
+        self.cmdCreateOrder.setAutoDefault(False)
+        self.cmdCreateOrder.setDefault(True)
         self.cmdCreateOrder.setObjectName(_fromUtf8("cmdCreateOrder"))
         self.gridLayout_4.addWidget(self.cmdCreateOrder, 5, 1, 1, 1)
         self.chkMenuFirst = QtGui.QCheckBox(self.widget_5)
@@ -300,6 +307,7 @@ class Ui_frmMain(object):
         self.treeServices.headerItem().setText(0, QtGui.QApplication.translate("frmMain", "Список серверов приложений", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabToolTip(self.tabWidget.indexOf(self.tabServices), QtGui.QApplication.translate("frmMain", "Серверы приложений", None, QtGui.QApplication.UnicodeUTF8))
         self.cmdAllDinnerOrdersToday.setText(QtGui.QApplication.translate("frmMain", "Все заказы на сегодня", None, QtGui.QApplication.UnicodeUTF8))
+        self.cmdRefreshMenu.setText(QtGui.QApplication.translate("frmMain", "Обновить меню", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("frmMain", "Меню на сегодня:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblTodayMenu.setText(QtGui.QApplication.translate("frmMain", "Идёт обновление, подождите...", None, QtGui.QApplication.UnicodeUTF8))
         self.chkMenuSalad.setText(QtGui.QApplication.translate("frmMain", "Салат", None, QtGui.QApplication.UnicodeUTF8))

@@ -4,13 +4,15 @@ import datetime
 from qt_common          import *
 from constants          import *
 from get_date_time      import GetDateTime
-from remote_functions   import set_coming_time, set_leaving_time
+from remote_functions   import set_coming_time, set_leaving_time, get_dinner_order
 from errors             import GuiException, RaisedGuiException
 from dinner             import get_today_menu
+from xml_utils          import get_xml_field_value
 
 class main_form(QDialog):
     ui = None
     tl = None
+    new_today_menu = None
     
     def __init__(self):
         super(main_form,  self).__init__()
@@ -55,6 +57,36 @@ class main_form(QDialog):
     def changeCaption(self):
         self.setWindowTitle('%s - %s' % (PROGRAM_NAME_FULL, self.ui.tabWidget.tabToolTip(self.ui.tabWidget.currentIndex())))
     
+    def setDinnerOrderItemsFromXML(self, xml):
+        salad = get_xml_field_value(xml, 'SALAD')
+        if salad is not None:
+            salad = int(salad)
+        else:
+            salad = 0
+        first = get_xml_field_value(xml, 'FIRST')
+        if first is not None:
+            first = int(first)
+        else:
+            first = 0
+        second = get_xml_field_value(xml, 'SECOND')
+        if second is not None:
+            second = int(second)
+        else:
+            second = 0
+        
+        if salad:
+            self.ui.chkMenuSalad.setCheckState(Qt.Checked)
+        else:
+            self.ui.chkMenuSalad.setCheckState(Qt.Unchecked)
+        if first:
+            self.ui.chkMenuFirst.setCheckState(Qt.Checked)
+        else:
+            self.ui.chkMenuFirst.setCheckState(Qt.Unchecked)
+        if second:
+            self.ui.chkMenuSecond.setCheckState(Qt.Checked)
+        else:
+            self.ui.chkMenuSecond.setCheckState(Qt.Unchecked)
+    
     @pyqtSlot()
     def tabChanged(self, index):
         self.changeCaption()
@@ -66,14 +98,20 @@ class main_form(QDialog):
                 self.ui.tblWeek.updateForCurrentWeek()
         # Обеды
         elif ob_name == 'tabDinner':
-            self.ui.lblTodayMenu.setText(DINNER_LOADING_MESSAGE)
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             try:
-                today_menu = get_today_menu()
-                if today_menu:
-                    self.ui.lblTodayMenu.setText('\n'.join(today_menu).decode('utf-8'))
-                else:
-                    self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
+                if self.new_today_menu is None:
+                    self.ui.lblTodayMenu.setText(DINNER_LOADING_MESSAGE)
+                    xml = get_dinner_order()
+                    today_menu = get_today_menu()
+                    menu_text = '\n'.join(today_menu).decode('utf-8')
+                    if today_menu:
+                        self.ui.lblTodayMenu.setText(menu_text)
+                        self.new_today_menu = menu_text
+                    else:
+                        self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
+                    self.setDinnerOrderItemsFromXML(xml)
+                
             except Exception as err:
                 self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
                 raise RaisedGuiException(err)

@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>467</width>
-    <height>399</height>
+    <height>429</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -485,7 +485,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QWidget" name="widget_4" native="true">
+        <widget class="QWidget" name="viewAllDinnersWidget" native="true">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -500,6 +500,16 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
+           <widget class="QPushButton" name="cmdAllDinnerOrdersToday">
+            <property name="text">
+             <string>Все заказы на сегодня</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer_4">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -513,9 +523,12 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="cmdAllDinnerOrdersToday">
+           <widget class="QPushButton" name="cmdRefreshMenu">
             <property name="text">
-             <string>Все заказы на сегодня</string>
+             <string>Обновить меню</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -613,6 +626,12 @@
               <widget class="QPushButton" name="cmdCreateOrder">
                <property name="text">
                 <string>Заказать</string>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="default">
+                <bool>true</bool>
                </property>
               </widget>
              </item>

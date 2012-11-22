@@ -4,13 +4,13 @@ import sys
 from qt_common          import *
 from constants          import *
 from gui.Ui_main_form   import *
-from remote_functions   import get_staff_by_user
+from remote_functions   import get_staff_by_user, get_dinner_order_permissions
 from cache              import initCache, fillCache
 from login              import tryLogin
 from main_form          import main_form
 from tray_application   import tray_application
-from errors             import get_last_error
-
+from errors             import get_last_error, RaisedGuiException
+from xml_utils          import get_xml_field_value
 
 def main():
     app = tray_application( sys.argv )
@@ -48,6 +48,18 @@ def main():
             ui.searchWidget.hide()
             app.main_form.setWindowTitle(PROGRAM_NAME_FULL)
             app.main_form.show()
+
+            try:
+                xml = get_dinner_order_permissions()
+                access = int(get_xml_field_value(xml, 'ACCESS_TO_ORDERS'))
+                if access:
+                    view_all = int(get_xml_field_value(xml, 'VIEW_ALL_ORDERS'))
+                    if not view_all:
+                        ui.cmdAllDinnerOrdersToday.hide()
+                else:
+                    ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabDinner))
+            except Exception as err:
+                raise RaisedGuiException(err)
 
             #
             # Services
