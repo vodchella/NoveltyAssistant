@@ -25,3 +25,6 @@ def get_today_menu():
         except:
             pass
     return arr
+
+def get_today_menu_text():
+    return '\n'.join(get_today_menu()).decode('utf-8')

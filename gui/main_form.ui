@@ -499,8 +499,20 @@
           </size>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QPushButton" name="cmdAllDinnerOrdersToday">
+            <property name="minimumSize">
+             <size>
+              <width>128</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Все заказы на сегодня</string>
             </property>
@@ -524,6 +536,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="cmdRefreshMenu">
+            <property name="minimumSize">
+             <size>
+              <width>93</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Обновить меню</string>
             </property>

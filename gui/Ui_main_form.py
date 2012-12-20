@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'D:\Twister\Dropbox\novelty_assistant\gui\main_form.ui'
 #
-# Created: Thu Nov 22 20:45:25 2012
+# Created: Thu Dec 20 19:36:57 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -201,15 +201,17 @@ class Ui_frmMain(object):
         self.viewAllDinnersWidget.setMaximumSize(QtCore.QSize(16777215, 40))
         self.viewAllDinnersWidget.setObjectName(_fromUtf8("viewAllDinnersWidget"))
         self.horizontalLayout_5 = QtGui.QHBoxLayout(self.viewAllDinnersWidget)
-        self.horizontalLayout_5.setMargin(0)
+        self.horizontalLayout_5.setContentsMargins(0, -1, 0, -1)
         self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
         self.cmdAllDinnerOrdersToday = QtGui.QPushButton(self.viewAllDinnersWidget)
+        self.cmdAllDinnerOrdersToday.setMinimumSize(QtCore.QSize(128, 0))
         self.cmdAllDinnerOrdersToday.setAutoDefault(False)
         self.cmdAllDinnerOrdersToday.setObjectName(_fromUtf8("cmdAllDinnerOrdersToday"))
         self.horizontalLayout_5.addWidget(self.cmdAllDinnerOrdersToday)
         spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem3)
         self.cmdRefreshMenu = QtGui.QPushButton(self.viewAllDinnersWidget)
+        self.cmdRefreshMenu.setMinimumSize(QtCore.QSize(93, 0))
         self.cmdRefreshMenu.setAutoDefault(False)
         self.cmdRefreshMenu.setObjectName(_fromUtf8("cmdRefreshMenu"))
         self.horizontalLayout_5.addWidget(self.cmdRefreshMenu)

@@ -4,9 +4,9 @@ import datetime
 from qt_common          import *
 from constants          import *
 from get_date_time      import GetDateTime
-from remote_functions   import set_coming_time, set_leaving_time, get_dinner_order
+from remote_functions   import set_coming_time, set_leaving_time, get_dinner_order, create_ore_replace_dinner_order
 from errors             import GuiException, RaisedGuiException
-from dinner             import get_today_menu
+from dinner             import get_today_menu_text
 from xml_utils          import get_xml_field_value
 
 class main_form(QDialog):
@@ -87,6 +87,49 @@ class main_form(QDialog):
         else:
             self.ui.chkMenuSecond.setCheckState(Qt.Unchecked)
     
+    def setDinnerOrderItems(self):
+        # print get_dinner_order()
+        # <RESULT><MENU></MENU><ORDER><SALAD>0</SALAD><FIRST>1</FIRST><SECOND>1</SECOND></ORDER></RESULT>
+        self.setDinnerOrderItemsFromXML(get_dinner_order())
+    
+    @pyqtSlot()
+    def createDinnerOrder(self):
+        salad  = 0
+        first  = 0
+        second = 0
+        
+        if self.ui.chkMenuSalad.checkState() == Qt.Checked:
+            salad  = 1
+        if self.ui.chkMenuFirst.checkState() == Qt.Checked:
+            first  = 1
+        if self.ui.chkMenuSecond.checkState() == Qt.Checked:
+            second = 1
+        
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        try:
+            create_ore_replace_dinner_order(self.new_today_menu.encode('utf-8'), salad, first, second)
+        finally:
+            QApplication.restoreOverrideCursor()
+    
+    @pyqtSlot()
+    def updateDinnerOrderPage(self, force=True):
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        try:
+            if (self.new_today_menu is None) or force:
+                self.ui.lblTodayMenu.setText(DINNER_LOADING_MESSAGE)
+                menu_text = get_today_menu_text()
+                if menu_text:
+                    self.ui.lblTodayMenu.setText(menu_text)
+                    self.new_today_menu = menu_text
+                else:
+                    self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
+                self.setDinnerOrderItems()
+        except Exception as err:
+            self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
+            raise RaisedGuiException(err)
+        finally:
+            QApplication.restoreOverrideCursor()
+    
     @pyqtSlot()
     def tabChanged(self, index):
         self.changeCaption()
@@ -98,25 +141,7 @@ class main_form(QDialog):
                 self.ui.tblWeek.updateForCurrentWeek()
         # Обеды
         elif ob_name == 'tabDinner':
-            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-            try:
-                if self.new_today_menu is None:
-                    self.ui.lblTodayMenu.setText(DINNER_LOADING_MESSAGE)
-                    xml = get_dinner_order()
-                    today_menu = get_today_menu()
-                    menu_text = '\n'.join(today_menu).decode('utf-8')
-                    if today_menu:
-                        self.ui.lblTodayMenu.setText(menu_text)
-                        self.new_today_menu = menu_text
-                    else:
-                        self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
-                    self.setDinnerOrderItemsFromXML(xml)
-                
-            except Exception as err:
-                self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
-                raise RaisedGuiException(err)
-            finally:
-                QApplication.restoreOverrideCursor()
+            self.updateDinnerOrderPage(force=False)
     
     @pyqtSlot()
     def startSearching(self):

@@ -69,6 +69,12 @@ def main():
             if not ui.treeServices.getItemsCount():
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabServices))
             
+            #
+            # Dinner
+            #
+            QObject.connect( ui.cmdRefreshMenu, SIGNAL('clicked()'), app.main_form.updateDinnerOrderPage )
+            QObject.connect( ui.cmdCreateOrder, SIGNAL('clicked()'), app.main_form.createDinnerOrder )
+            
             if staff_id is not None:
                 #
                 # Tasks
