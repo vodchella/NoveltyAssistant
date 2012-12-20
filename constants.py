@@ -8,7 +8,7 @@ DONT_EXIT_IF_CANT_CONNECT = False
 #
 # Program
 #
-PROGRAM_REVISION_NUMBER = 54
+PROGRAM_REVISION_NUMBER = 55
 PROGRAM_VERSION = '0.03.%s' % PROGRAM_REVISION_NUMBER
 PROGRAM_NAME = 'Novelty Assistant'
 PROGRAM_NAME_FULL = '%s v%s' % (PROGRAM_NAME, PROGRAM_VERSION)
@@ -32,6 +32,8 @@ DINNER_LOADING_FAULT_MESSAGE = u"Ошибка загрузки данных. П�
 # Format masks
 #
 REMOTE_DATE_FORMAT = '%d.%m.%Y'
+REMOTE_DATETIME_FORMAT = '%d.%m.%Y %H:%M:%S'
+CACHE_DATETIME_FORMAT  = '%Y-%m-%d %H:%M:%S'
 
 #
 # Error codes

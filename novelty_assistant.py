@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from datetime           import datetime
 from qt_common          import *
 from constants          import *
 from gui.Ui_main_form   import *
-from remote_functions   import get_staff_by_user, get_dinner_order_permissions
-from cache              import initCache, fillCache
+from remote_functions   import get_staff_by_user, get_dinner_order_permissions, get_directories_changed_at
+from cache              import initCache, fillCache, getSetting, deleteCacheData
 from login              import tryLogin
 from main_form          import main_form
 from tray_application   import tray_application
@@ -35,9 +36,26 @@ def main():
         try:
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
 
+            #
+            # Тут получим даты последних обновлений справочников с сервера и из кэша
+            #
+            dir_dates = get_directories_changed_at()
+            customers_updated_at  = datetime.strptime(getSetting('customers_updated_at'),  CACHE_DATETIME_FORMAT)
+            task_types_updated_at = datetime.strptime(getSetting('task_types_updated_at'), CACHE_DATETIME_FORMAT)
+            
+            #
+            # Если данные устарели, то удалим их, fillCache() подтянет их заново
+            #
+            if customers_updated_at is not None:
+                if customers_updated_at < dir_dates['customers_changed_at']:
+                    deleteCacheData('customers')
+            if task_types_updated_at is not None:
+                if task_types_updated_at < dir_dates['task_types_changed_at']:
+                    deleteCacheData('task_types')
+
             if get_last_error() != ERROR_CANT_CONNECT:
                 staff_id = get_staff_by_user(user_id)
-                fillCache()
+                fillCache(dir_dates['server_time'])
             else:
                 staff_id = None
             

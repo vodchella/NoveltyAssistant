@@ -39,7 +39,7 @@ def initCache():
                                                             setting_name TEXT NOT NULL,
                                                             setting_value TEXT)""")
 
-def fillCache():
+def fillCache(server_datetime):
     con = sqliteConnection()
     cur = sqliteCursor(con)
     cur.execute("select count(*) from sqlite_master where tbl_name = 'customers'")
@@ -53,7 +53,10 @@ def fillCache():
                 customer_id   = get_node_element_value(customer, 'CUSTOMER_ID')
                 customer_name = get_node_element_value(customer, 'CUSTOMER_NAME')
                 cur.execute('insert into customers (novelty_id, customer_name) values (?, ?)', (customer_id, customer_name))
+            saveSetting('customers_updated_at', server_datetime, con, False)
             
+        cur.execute("select count(*) from task_types")
+        if cur.fetchall()[0][0] == 0:
             xml_str = get_task_types()
             dom = parseString(xml_str)
             task_types = dom.getElementsByTagName('TASK_TYPE')
@@ -61,8 +64,9 @@ def fillCache():
                 task_type_id   = get_node_element_value(task_type, 'TASK_TYPE_ID')
                 task_type_name = get_node_element_value(task_type, 'TASK_TYPE_NAME')
                 cur.execute('insert into task_types (novelty_id, task_type_name) values (?, ?)', (task_type_id, task_type_name))
-            
-            con.commit()
+            saveSetting('task_types_updated_at', server_datetime, con, False)
+
+        con.commit()
 
 def getCustomers():
     cur = sqliteCursor()
@@ -79,19 +83,25 @@ def getTaskTypes():
     cur.execute("select novelty_id, task_type_name from task_types order by priority, task_type_name")
     return cur.fetchall()
 
-def saveSetting(setting, value):
+def saveSetting(setting, value, connection=None, commit=True):
     set = str(setting)
     val = str(value)
     
-    con = sqliteConnection()
+    if connection is not None:
+        con = connection
+    else:
+        con = sqliteConnection()
     cur = sqliteCursor(con)
+    
     cur.execute("select count(*) from settings where setting_name = ?", [set])
     cnt = cur.fetchall()[0][0]
     if cnt != 0:
         cur.execute("update settings set setting_value = ? where setting_name = ?", (val, set))
     else:
         cur.execute("insert into settings (setting_name, setting_value) values (?, ?)", (set, val))
-    con.commit()
+        
+    if commit:
+        con.commit()
 
 def getSetting(setting):
     cur = sqliteCursor()
@@ -107,3 +117,10 @@ def getSavedLoginData():
 def saveLoginData(user_name, user_pass):
     saveSetting(CACHE_USER_NAME, user_name)
     saveSetting(CACHE_USER_PASS, user_pass)
+
+# Не позволять вызывать функцию извне в таком виде. Возможны sql-инъекции
+def deleteCacheData(table_name):
+    con = sqliteConnection()
+    cur = sqliteCursor(con)
+    cur.execute("delete from %s" % table_name)
+    con.commit()

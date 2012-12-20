@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from datetime   import datetime
+from constants  import *
 from novelty    import login, get_data_xml
 from xml_utils  import get_xml_field_value, dict_to_xml
 from errors     import GuiException
@@ -65,3 +67,11 @@ def get_dinner_order():
 
 def get_dinner_order_permissions():
     return get_data_xml("GetDinnerOrderPermissions", "")
+
+def get_directories_changed_at():
+    xml = get_data_xml("GetDirectoriesChangedAt", "")
+    result = {}
+    result['server_time'] = datetime.strptime(get_xml_field_value(xml, 'SERVER_TIME'), REMOTE_DATETIME_FORMAT)
+    result['customers_changed_at']  = datetime.strptime(get_xml_field_value(xml, 'CUSTOMERS_CHANGED_AT'), REMOTE_DATETIME_FORMAT)
+    result['task_types_changed_at'] = datetime.strptime(get_xml_field_value(xml, 'TASK_TYPES_CHANGED_AT'), REMOTE_DATETIME_FORMAT)
+    return result
