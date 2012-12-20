@@ -39,9 +39,15 @@ def main():
             #
             # Тут получим даты последних обновлений справочников с сервера и из кэша
             #
+            customers_updated_at  = None
+            task_types_updated_at = None
             dir_dates = get_directories_changed_at()
-            customers_updated_at  = datetime.strptime(getSetting('customers_updated_at'),  CACHE_DATETIME_FORMAT)
-            task_types_updated_at = datetime.strptime(getSetting('task_types_updated_at'), CACHE_DATETIME_FORMAT)
+            customers_updated_at_str  = getSetting('customers_updated_at')
+            task_types_updated_at_str = getSetting('task_types_updated_at')
+            if customers_updated_at_str is not None:
+                customers_updated_at  = datetime.strptime(customers_updated_at_str,  CACHE_DATETIME_FORMAT)
+            if task_types_updated_at_str is not None:
+                task_types_updated_at = datetime.strptime(task_types_updated_at_str, CACHE_DATETIME_FORMAT)
             
             #
             # Если данные устарели, то удалим их, fillCache() подтянет их заново
