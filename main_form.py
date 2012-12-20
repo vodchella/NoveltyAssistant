@@ -7,7 +7,7 @@ from get_date_time      import GetDateTime
 from remote_functions   import set_coming_time, set_leaving_time, get_dinner_order, create_ore_replace_dinner_order
 from errors             import GuiException, RaisedGuiException
 from dinner             import get_today_menu_text
-from xml_utils          import get_xml_field_value
+from xml_utils          import get_xml_field_value, prepare_string
 
 class main_form(QDialog):
     ui = None
@@ -88,8 +88,6 @@ class main_form(QDialog):
             self.ui.chkMenuSecond.setCheckState(Qt.Unchecked)
     
     def setDinnerOrderItems(self):
-        # print get_dinner_order()
-        # <RESULT><MENU></MENU><ORDER><SALAD>0</SALAD><FIRST>1</FIRST><SECOND>1</SECOND></ORDER></RESULT>
         self.setDinnerOrderItemsFromXML(get_dinner_order())
     
     @pyqtSlot()
@@ -107,7 +105,7 @@ class main_form(QDialog):
         
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
-            create_ore_replace_dinner_order(self.new_today_menu.encode('utf-8'), salad, first, second)
+            create_ore_replace_dinner_order(prepare_string(self.new_today_menu.encode('utf-8')), salad, first, second)
         finally:
             QApplication.restoreOverrideCursor()
     
