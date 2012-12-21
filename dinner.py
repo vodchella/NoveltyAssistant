@@ -22,6 +22,13 @@ def get_today_menu():
             for divs in filter(lambda l: l.tag == 'div', iter(root_div)):
                 for p in filter(lambda l: (l.tag == 'p') and (l.text is not None), iter(divs)):
                     arr.append(p.text.encode('utf-8'))
+            
+            if not arr:
+                for divs in filter(lambda l: l.tag == 'div', iter(root_div)):
+                    for p in filter(lambda l: (l.tag == 'p'), iter(divs)):
+                        for em in filter(lambda l: (l.tag == 'em'), iter(p)):
+                            arr = ['%i. %s' % (i, a.strip()) for i, a in enumerate(em.text_content().encode('utf-8').replace('2. ', '1. ').replace('3. ', '1. ').replace('4. ', '1. ').split('1. '))][1:]
+                            break
         except:
             pass
     return arr
