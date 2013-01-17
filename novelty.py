@@ -25,6 +25,7 @@ user_id = 0
 def set_session_in_xml(xml, session):
     new_xml = replace_field_in_xml(xml, 'aSessionID', session)
     new_xml = replace_field_in_xml(new_xml, 'sessionID', session)
+    new_xml = replace_field_in_xml(new_xml, 'aSession', session)
     return new_xml
 
 #
@@ -62,6 +63,7 @@ def request_ex(xml, servers, port, use_ssl, url=SERVICES_URL, err_msg='Нево�
     if err is None:
         err = get_xml_field_value(d, 'ErrorMessage')
     if err is not None:
+        print err
         if 'Сессия не определена' in err:
             return request_ex(set_session_in_xml(xml, authenticate(force=True)), [server], port, use_ssl, url, err_msg)
         else:
