@@ -8,7 +8,7 @@ DONT_EXIT_IF_CANT_CONNECT = False
 #
 # Program
 #
-PROGRAM_REVISION_NUMBER = 57
+PROGRAM_REVISION_NUMBER = 58
 PROGRAM_VERSION = '0.03.%s' % PROGRAM_REVISION_NUMBER
 PROGRAM_NAME = 'Novelty Assistant'
 PROGRAM_NAME_FULL = '%s v%s' % (PROGRAM_NAME, PROGRAM_VERSION)
@@ -27,6 +27,7 @@ SERVICES_URL            = '/WebApps/ServiceController'
 DINNER_HTML = "http://dinner.kz/obed.html"
 DINNER_LOADING_MESSAGE = u"Идёт обновление, подождите..."
 DINNER_LOADING_FAULT_MESSAGE = u"Ошибка загрузки данных. Просмотрите меню на сайте <a href='%s'>dinner.kz</a>" % DINNER_HTML
+DINNER_REPORT_ID = 237
 
 #
 # Format masks

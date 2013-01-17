@@ -2,7 +2,7 @@
 
 from datetime   import datetime
 from constants  import *
-from novelty    import login, get_data_xml
+from novelty    import login, get_data_xml, generate_jasper_report_sync
 from xml_utils  import get_xml_field_value, dict_to_xml
 from errors     import GuiException
 
@@ -75,3 +75,7 @@ def get_directories_changed_at():
     result['customers_changed_at']  = datetime.strptime(get_xml_field_value(xml, 'CUSTOMERS_CHANGED_AT'), REMOTE_DATETIME_FORMAT)
     result['task_types_changed_at'] = datetime.strptime(get_xml_field_value(xml, 'TASK_TYPES_CHANGED_AT'), REMOTE_DATETIME_FORMAT)
     return result
+
+def generate_dinner_report():
+    return generate_jasper_report_sync(DINNER_REPORT_ID, "<param name='aOrderDate' type='date'>%s</param>" % (datetime.now().strftime(REMOTE_DATE_FORMAT)))
+    

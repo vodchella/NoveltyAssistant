@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import tempfile
+import os
+import subprocess
 from qt_common          import *
 from constants          import *
 from get_date_time      import GetDateTime
-from remote_functions   import set_coming_time, set_leaving_time, get_dinner_order, create_ore_replace_dinner_order
+from remote_functions   import set_coming_time, set_leaving_time, get_dinner_order, create_ore_replace_dinner_order, generate_dinner_report
 from errors             import GuiException, RaisedGuiException
 from dinner             import get_today_menu_text
 from xml_utils          import get_xml_field_value, prepare_string
@@ -105,7 +108,10 @@ class main_form(QDialog):
         
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
-            create_ore_replace_dinner_order(prepare_string(self.new_today_menu.encode('utf-8')), salad, first, second)
+            menu = ''
+            if self.new_today_menu is not None:
+                menu = prepare_string(self.new_today_menu.encode('utf-8'))
+            create_ore_replace_dinner_order(menu, salad, first, second)
         finally:
             QApplication.restoreOverrideCursor()
     
@@ -124,6 +130,25 @@ class main_form(QDialog):
                 self.setDinnerOrderItems()
         except Exception as err:
             self.ui.lblTodayMenu.setText(DINNER_LOADING_FAULT_MESSAGE)
+            raise RaisedGuiException(err)
+        finally:
+            QApplication.restoreOverrideCursor()
+    
+    @pyqtSlot()
+    def printDinnerOrders(self):
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        try:
+            pdf = generate_dinner_report()
+            fd = tempfile.mkstemp(suffix='.pdf', prefix='novasstrep')
+            filename = fd[1]
+            f = os.fdopen(fd[0], 'w')
+            f.write(pdf)
+            f.close()
+            try:
+                os.startfile(filename)
+            except AttributeError:
+                subprocess.call(['open', filename])
+        except Exception as err:
             raise RaisedGuiException(err)
         finally:
             QApplication.restoreOverrideCursor()

@@ -114,3 +114,15 @@ def login(name, pwd):
     user_name, user_pass = name, pwd
     authenticate()
     return user_id
+
+def generate_jasper_report_sync(report_id, param_xml):
+    param = dict(
+        aSession = authenticate(),
+        aParamsXML = "<![CDATA[<report><name>%i</name><return>pdf</return>%s</report>]]>" % (report_id, param_xml)
+        )
+    result_xml = remote_call('generateJasperReportSync', param)
+    encoded_result = get_xml_field_value(result_xml, 'return')
+    if encoded_result is None:
+        raise GuiException("Неизвестный тип ответа от веб-сервиса")
+    
+    return base64.b64decode(encoded_result)

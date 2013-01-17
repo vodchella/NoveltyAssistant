@@ -98,6 +98,7 @@ def main():
             #
             QObject.connect( ui.cmdRefreshMenu, SIGNAL('clicked()'), app.main_form.updateDinnerOrderPage )
             QObject.connect( ui.cmdCreateOrder, SIGNAL('clicked()'), app.main_form.createDinnerOrder )
+            QObject.connect( ui.cmdAllDinnerOrdersToday, SIGNAL('clicked()'), app.main_form.printDinnerOrders )
             
             if staff_id is not None:
                 #
