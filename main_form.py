@@ -147,7 +147,7 @@ class main_form(QDialog):
             try:
                 os.startfile(filename)
             except AttributeError:
-                subprocess.call(['open', filename])
+                subprocess.call(['xdg-open', filename])
         except Exception as err:
             raise RaisedGuiException(err)
         finally:
