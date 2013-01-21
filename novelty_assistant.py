@@ -60,7 +60,10 @@ def main():
                     deleteCacheData('task_types')
 
             if get_last_error() != ERROR_CANT_CONNECT:
-                staff_id = get_staff_by_user(user_id)
+                try:
+                    staff_id = get_staff_by_user(user_id)
+                except:
+                    staff_id = None
                 fillCache(dir_dates['server_time'])
             else:
                 staff_id = None
@@ -72,6 +75,11 @@ def main():
             ui.searchWidget.hide()
             app.main_form.setWindowTitle(PROGRAM_NAME_FULL)
             app.main_form.show()
+
+            #
+            # Other
+            #
+            QObject.connect( app.main_form.ui.tabWidget, SIGNAL('currentChanged(int)'), app.main_form.tabChanged )
 
             try:
                 xml = get_dinner_order_permissions()
@@ -99,7 +107,7 @@ def main():
             QObject.connect( ui.cmdRefreshMenu, SIGNAL('clicked()'), app.main_form.updateDinnerOrderPage )
             QObject.connect( ui.cmdCreateOrder, SIGNAL('clicked()'), app.main_form.createDinnerOrder )
             QObject.connect( ui.cmdAllDinnerOrdersToday, SIGNAL('clicked()'), app.main_form.printDinnerOrders )
-            
+
             if staff_id is not None:
                 #
                 # Tasks
@@ -131,11 +139,7 @@ def main():
                 QObject.connect( ui.cmdComing,  SIGNAL('clicked()'), app.main_form.setNewComingTime )
                 QObject.connect( ui.cmdLeaving, SIGNAL('clicked()'), app.main_form.setNewLeavingTime )
                 QObject.connect( ui.cmdRefreshTimeSheet, SIGNAL('clicked()'), ui.tblWeek.updateForCurrentWeek )
-                
-                #
-                # Other
-                #
-                QObject.connect( app.main_form.ui.tabWidget, SIGNAL('currentChanged(int)'), app.main_form.tabChanged )
+
             else:
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTasks))
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTime))
