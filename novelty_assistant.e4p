@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric5 project file for project novelty_assistant -->
-<!-- Saved: 2012-11-21, 14:19:00 -->
-<!-- Copyright (C) 2012 Twister, twister.kz@gmail.com -->
+<!-- Saved: 2013-01-21, 22:56:30 -->
+<!-- Copyright (C) 2013 Twister, twister.kz@gmail.com -->
 <Project version="5.1">
   <Language>en_US</Language>
   <Hash>969271bcb4e7cf09b7f541cfd5e78ebf58309475</Hash>
@@ -33,6 +33,7 @@
     <Source>qt_common.py</Source>
     <Source>services_tree.py</Source>
     <Source>dinner.py</Source>
+    <Source>file_utils.py</Source>
   </Sources>
   <Forms>
     <Form>gui/main_form.ui</Form>

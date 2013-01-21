@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-import tempfile
-import os
-import subprocess
 from qt_common          import *
 from constants          import *
 from get_date_time      import GetDateTime
@@ -11,6 +8,7 @@ from remote_functions   import set_coming_time, set_leaving_time, get_dinner_ord
 from errors             import GuiException, RaisedGuiException
 from dinner             import get_today_menu_text
 from xml_utils          import get_xml_field_value, prepare_string
+from file_utils         import clear_tmp_dir, save_tmp_file, open_file_with_default_app
 
 class main_form(QDialog):
     ui = None
@@ -139,15 +137,8 @@ class main_form(QDialog):
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         try:
             pdf = generate_dinner_report()
-            fd = tempfile.mkstemp(suffix='.pdf', prefix='novasstrep')
-            filename = fd[1]
-            f = os.fdopen(fd[0], 'w')
-            f.write(pdf)
-            f.close()
-            try:
-                os.startfile(filename)
-            except AttributeError:
-                subprocess.call(['xdg-open', filename])
+            filename = save_tmp_file(pdf)
+            open_file_with_default_app(filename)
         except Exception as err:
             raise RaisedGuiException(err)
         finally:
@@ -164,6 +155,7 @@ class main_form(QDialog):
                 self.ui.tblWeek.updateForCurrentWeek()
         # Обеды
         elif ob_name == 'tabDinner':
+            clear_tmp_dir()
             self.updateDinnerOrderPage(force=False)
     
     @pyqtSlot()
