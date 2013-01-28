@@ -46,6 +46,13 @@ def get_today_menu():
                         for strong in filter(lambda l: (l.tag == 'strong'), iter(d)):
                             for em in filter(lambda l: (l.tag == 'em'), iter(strong)):
                                 arr.append(em.text.encode('utf-8').strip())
+            
+            if not arr:
+                for divs in filter(lambda l: l.tag == 'div', iter(root_div)):
+                    for d in filter(lambda l: (l.tag == 'div'), iter(divs)):
+                        for p in filter(lambda l: (l.tag == 'p'), iter(d)):
+                            for em in filter(lambda l: (l.tag == 'em'), iter(p)):
+                                arr.append(em.text.encode('utf-8').strip())
 
         except:
             pass
