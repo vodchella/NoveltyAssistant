@@ -79,3 +79,5 @@ def get_directories_changed_at():
 def generate_dinner_report():
     return generate_jasper_report_sync(DINNER_REPORT_ID, "<param name='aOrderDate' type='date'>%s</param>" % (datetime.now().strftime(REMOTE_DATE_FORMAT)))
     
+def get_dinner_paths():
+    return get_xml_field_value(get_data_xml("GetDinnerPaths", ""), 'PATHS').split()

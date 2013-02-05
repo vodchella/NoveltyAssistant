@@ -55,7 +55,10 @@ class tray_application(QApplication):
             last_version_number = get_program_version()
             QApplication.restoreOverrideCursor()
             if last_version_number > PROGRAM_REVISION_NUMBER:
-                new_in_version = get_new_in_version().decode('utf-8').replace('\n', '<br>')
+                new_in_version = None
+                new_in_version_raw = get_new_in_version()
+                if new_in_version_raw is not None:
+                    new_in_version = new_in_version_raw.decode('utf-8').replace('\n', '<br>')
                 if new_in_version is not None:
                     new_in_version = u"<br><br>Новое в версии:<br>%s" % new_in_version
                 else:
