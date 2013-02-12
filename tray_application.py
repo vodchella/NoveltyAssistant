@@ -82,7 +82,7 @@ class tray_application(QApplication):
         icon.addPixmap(QPixmap(":/images/main_64.ico"), QIcon.Normal, QIcon.Off)
         s.setWindowIcon(icon)
 
-        label = QLabel( u"%s<br><br>Twister© 2012 для компании <a href='http://novelty.kz'>Novelty</a><br><br><a href='https://launchpad.net/novelty-assistant/'>https://launchpad.net/novelty-assistant/</a>" % PROGRAM_NAME_FULL )
+        label = QLabel( u"%s<br><br>Twister© 2013 для компании <a href='http://novelty.kz'>Novelty</a><br><br><a href='https://launchpad.net/novelty-assistant/'>https://launchpad.net/novelty-assistant/</a>" % PROGRAM_NAME_FULL )
         label.setWordWrap( True )
         label.setOpenExternalLinks( True )
         s.layout().addWidget( label )

@@ -14,7 +14,11 @@ def get_dinner_html():
         pass
 
 def arr_from_string(sz):
-    return ['%i. %s' % (i, a.strip()) for i, a in enumerate(sz.replace('2. ', '1. ').replace('3. ', '1. ').replace('4. ', '1. ').split('1. '))][1:]
+    magic_str = '*<*>*'
+    return sz.replace('1. ', magic_str).replace('2. ', magic_str).replace('3. ', magic_str).replace('4. ', magic_str).split(magic_str)[1:]
+
+def numerate_arr(arr):
+    return ['%i. %s' % (i+1, a.strip()) for i, a in enumerate(arr)]
 
 def go_deep(root, path_arr, result):
     for elem in filter(lambda l: l.tag == path_arr[0], iter(root)):
@@ -47,7 +51,7 @@ def get_today_menu():
                     break
         except:
             pass
-    return arr
+    return numerate_arr(arr)
 
 def get_today_menu_text():
     return '\n'.join(get_today_menu()).decode('utf-8')
