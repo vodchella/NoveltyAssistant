@@ -68,7 +68,8 @@ class services_tree(QTreeWidget):
                 try:
                     QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
                     xml = remote_call_ex(cmd_str,
-                                         dict(serviceName=service_data.service_name,
+                                         dict(serverID=server_data.id,
+                                              serviceName=service_data.service_name,
                                               sessionID=authenticate()),
                                          server_data.server,
                                          server_data.port,
@@ -123,6 +124,7 @@ class services_tree(QTreeWidget):
                 iconService.addPixmap(QPixmap(":/images/service_32.ico"), QIcon.Normal, QIcon.Off)
                 for server in servers:
                     data = server_data()
+                    data.id       = int(get_node_element_value(server, 'SERVER_ID'))
                     data.server   = unicode(get_node_element_value(server, 'SERVER_ADDRESS'))
                     data.port     = int(get_node_element_value(server, 'WEBSERVICE_PORT'))
                     data.use_ssl  = int(get_node_element_value(server, 'SSL_BOOL')) != 0

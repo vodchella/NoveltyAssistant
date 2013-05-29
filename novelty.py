@@ -51,7 +51,7 @@ def request_ex(xml, servers, port, use_ssl, url=SERVICES_URL, err_msg='Нево�
             connected = True
         except:
             pass
-            
+    
     if not connected:
         set_last_error(ERROR_CANT_CONNECT)
         raise GuiException(err_msg)
