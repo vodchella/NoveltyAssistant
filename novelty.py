@@ -49,6 +49,7 @@ def request_ex(xml, servers, port, use_ssl, url=SERVICES_URL, err_msg='Нево�
         try:
             h.request('POST', url, body=xml, headers=headers)
             connected = True
+            break
         except:
             pass
     
