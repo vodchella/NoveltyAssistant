@@ -59,7 +59,7 @@ def request_ex(xml, servers, port, use_ssl, url=SERVICES_URL, err_msg='Нево�
     
     r = h.getresponse()
     d = r.read()
-    
+
     err = get_xml_field_value(d, 'faultstring')
     if err is None:
         err = get_xml_field_value(d, 'ErrorMessage')
