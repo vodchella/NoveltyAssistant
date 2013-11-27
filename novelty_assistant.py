@@ -142,7 +142,12 @@ def main():
 
             else:
                 ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTasks))
-                ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTime))
+            
+            #
+            # Скрываю ставшие ненужными табы
+            #
+            ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabTime))
+            ui.tabWidget.removeTab(ui.tabWidget.indexOf(ui.tabDinner))
             
             app.main_form.changeCaption()
         finally:
