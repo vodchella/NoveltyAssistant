@@ -8,7 +8,7 @@ DONT_EXIT_IF_CANT_CONNECT = False
 #
 # Program
 #
-PROGRAM_REVISION_NUMBER = '74'
+PROGRAM_REVISION_NUMBER = '75'
 PROGRAM_VERSION = '0.03.%s' % PROGRAM_REVISION_NUMBER
 PROGRAM_NAME = 'Novelty Assistant'
 PROGRAM_NAME_FULL = '%s v%s' % (PROGRAM_NAME, PROGRAM_VERSION)
@@ -21,7 +21,7 @@ PROGRAM_NAME_FULL = '%s v%s' % (PROGRAM_NAME, PROGRAM_VERSION)
 # Ошибка была выявлена после ревизии №70, в которой был исправлен баг и программа наконец стала 
 # коннектиться к первому доступному серверу в списке, а не к последнему.
 # В будущем необходимо что-то придумать с ServiceController
-HOME_NOVELTY_SERVERS    = ['home2.novelty.kz'] #['home.novelty.kz', 'home2.novelty.kz']
+HOME_NOVELTY_SERVERS    = ['app02.novelty.kz'] #['home.novelty.kz', 'home2.novelty.kz']
 HOME_NOVELTY_PORT       = 28110
 BRIDGE_URL              = '/WebBridge/WebBridge'
 SERVICES_URL            = '/WebApps/ServiceController'
