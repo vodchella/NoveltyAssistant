@@ -54,7 +54,7 @@ class tray_application(QApplication):
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             last_version_number = get_program_version()
             QApplication.restoreOverrideCursor()
-            if last_version_number > PROGRAM_REVISION_NUMBER:
+            if int(last_version_number) > int(PROGRAM_REVISION_NUMBER):
                 new_in_version = None
                 new_in_version_raw = get_new_in_version()
                 if new_in_version_raw is not None:
