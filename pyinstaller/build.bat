@@ -7,27 +7,27 @@ goto :EOF
 :yes
 echo Building started...
 
-cd D:\Twister\python\pyinstaller
+cd C:\Python27\Scripts
 
-D:\Twister\python\python.exe Build.py D:\Twister\Dropbox\novelty_assistant\pyinstaller\novelty_assistant.spec
+python D:\Distr\PyInstaller-2.1\pyinstaller.py D:\Projects2\novelty_assistant\pyinstaller\novelty_assistant.spec
 
-rmdir /s /q "D:\Twister\Dropbox\novelty_assistant\pyinstaller\build"
-del D:\Twister\Dropbox\novelty_assistant\pyinstaller\warnnovelty_assistant.txt
+rmdir /s /q "D:\Projects2\novelty_assistant\pyinstaller\build"
+del D:\Projects2\novelty_assistant\pyinstaller\warnnovelty_assistant.txt
 
 
 echo Compressing started...
 
 :EXED
-DEL "D:\Projects\build_novelty_assistant\Novelty Assistant_compressed.ex_"
-IF EXIST "D:\Projects\build_novelty_assistant\Novelty Assistant_compressed.ex_" GOTO EXED
+DEL "D:\Projects2\build_novelty_assistant\Novelty Assistant_compressed.ex_"
+IF EXIST "D:\Projects2\build_novelty_assistant\Novelty Assistant_compressed.ex_" GOTO EXED
 
-cd D:\Programms\upx
-upx.exe -9 -o"D:\Projects\build_novelty_assistant\Novelty Assistant_compressed.ex_" "D:\Projects\build_novelty_assistant\Novelty Assistant.exe"
+cd D:\Distr\upx
+upx.exe -9 -o"D:\Projects2\novelty_assistant\pyinstaller\dist\Novelty Assistant_compressed.ex_" "D:\Projects2\novelty_assistant\pyinstaller\dist\Novelty Assistant.exe"
 
 :EXED1
-DEL "D:\Projects\build_novelty_assistant\Novelty Assistant.exe"
-IF EXIST "D:\Projects\build_novelty_assistant\Novelty Assistant.exe" GOTO EXED1
+DEL "D:\Projects2\novelty_assistant\pyinstaller\dist\Novelty Assistant.exe"
+IF EXIST "D:\Projects2\novelty_assistant\pyinstaller\dist\Novelty Assistant.exe" GOTO EXED1
 
-RENAME "D:\Projects\build_novelty_assistant\Novelty Assistant_compressed.ex_" "Novelty Assistant.exe"
+RENAME "D:\Projects2\novelty_assistant\pyinstaller\dist\Novelty Assistant_compressed.ex_" "Novelty Assistant.exe"
 
 pause Press any key to exit

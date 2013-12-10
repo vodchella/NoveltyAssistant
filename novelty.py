@@ -44,7 +44,7 @@ def request_ex(xml, servers, port, use_ssl, url=SERVICES_URL, err_msg='Нево�
         headers = {
             'Host':host_str,
             'Content-Type':'text/xml; charset=utf-8',
-            'Content-Length':len(xml),
+            'Content-Length':str(len(xml)),
             }
         try:
             h.request('POST', url, body=xml, headers=headers)
